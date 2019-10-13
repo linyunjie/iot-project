@@ -1,0 +1,13 @@
+{
+  "name": "mypublic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "HelloWorld.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+	"start": "node HelloWorld.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
