@@ -34,11 +34,17 @@ app.get('/', function (req, res) {
                console.log(err);
                res.status(400).send(err);
            }
-		   console.log("not able to get connection "+ err);
+		   console.log("get connection ");
            res.status(200).send(result.rows);
        });
     });
 });
-//app.listen(4000, function () {
-    //console.log('Server is running.. on Port 4000');
-//});
+
+// check running enviroment
+var port = process.env.PORT || 3000;
+
+app.listen(port);
+
+if(port === 3000){
+  console.log('RUN http://localhost:3000/')
+}
