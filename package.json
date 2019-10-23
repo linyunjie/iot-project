@@ -5,9 +5,12 @@
   "main": "HelloWorld.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node HelloWorld.js"
+    "start": "node HelloWorld.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^7.12.1"
+  }
 }

@@ -1,18 +1,41 @@
-//引用'http'模組
-const http = require('http');
+const pg = require('pg');
 
-//設定server網址，因為在本機端測試，所以輸入127.0.0.1
-//const hostname = '127.0.0.1'  //上傳至伺服器需拿掉
+const config = {
+    host: 'ec2-54-235-163-246.compute-1.amazonaws.com',
+    // Do not hard code your username and password.
+    // Consider using Node environment variables.
+    user: 'eaxzdhiykyiiph',     
+    password: '468e4d857c5902a137bae39cb716ad75833430f19e68762c4f80f80417e1be47',
+    database: 'd5a2ojn8eaksmp',
+    port: 5432,
+    ssl: true
+};
 
-//port 號會由 Heroku 給予，因此不再自行指定
-const PORT = process.env.PORT || 3000;
+const client = new pg.Client(config);
 
-//新增一個server並指定他的頁面資訊，內容為'Hello World!'
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World!\n');
+client.connect(err => {
+    if (err) throw err;
+    else { queryDatabase(); }
 });
 
-//監聽得到的 port 號開啟
-server.listen(PORT, () => console.log(`Listening on ${PORT}`));
+function queryDatabase() {
+  
+    console.log(`Running query to PostgreSQL server: ${config.host}`);
+
+    //const query = 'SELECT * FROM inventory;';
+
+    //client.query(query)
+        //.then(res => {
+            //const rows = res.rows;
+
+            //rows.map(row => {
+                //console.log(`Read: ${JSON.stringify(row)}`);
+            //});
+
+            //process.exit();
+        //})
+        //.catch(err => {
+            //console.log(err);
+        //});
+
+}
