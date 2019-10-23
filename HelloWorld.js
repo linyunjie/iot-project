@@ -22,20 +22,20 @@ function queryDatabase() {
   
     console.log(`Running query to PostgreSQL server: ${config.host}`);
 
-    //const query = 'SELECT * FROM inventory;';
+    const query = 'SELECT * FROM public.jinne;';
 
-    //client.query(query)
-        //.then(res => {
-            //const rows = res.rows;
+    client.query(query)
+        .then(res => {
+            const rows = res.rows;
 
-            //rows.map(row => {
-                //console.log(`Read: ${JSON.stringify(row)}`);
-            //});
+            rows.map(row => {
+                console.log(`Read: ${JSON.stringify(row)}`);
+            });
 
-            //process.exit();
-        //})
-        //.catch(err => {
-            //console.log(err);
-        //});
+            process.exit();
+        })
+        .catch(err => {
+            console.log(err);
+        });
 
 }
