@@ -1,6 +1,13 @@
-const pg = require('pg');
+var express = require('express');
+var app = express();
+var pg = require('pg');
 
-const config = {
+var engine = require('ejs-locals');
+app.engine('ejs',engine);
+app.set('views','./views');
+app.set('view engine','ejs');
+
+var config = {
     host: 'ec2-54-235-163-246.compute-1.amazonaws.com',
     // Do not hard code your username and password.
     // Consider using Node environment variables.
@@ -11,31 +18,28 @@ const config = {
     ssl: true
 };
 
-const client = new pg.Client(config);
+var data = {};
+var pool = new pg.Pool(config);
 
-client.connect(err => {
-    if (err) throw err;
-    else { queryDatabase(); }
+app.get('/', function (req, res) {
+    pool.connect(function(err,client,done) {
+       if(err){
+           console.log("not able to get connection "+ err);
+           res.status(400).send(err);
+       } 
+       client.query('SELECT * FROM public.jinne' ,function(err,result) {
+          //call `done()` to release the client back to the pool
+           done(); 
+           if(err){
+               console.log(err);
+               res.status(400).send(err);
+           }
+		   console.log("not able to get connection "+ err);
+           res.status(200).send(result.rows);
+       });
+    });
 });
 
-function queryDatabase() {
-  
-    console.log(`Running query to PostgreSQL server: ${config.host}`);
-
-    const query = 'SELECT * FROM public.jinne;';
-
-    client.query(query)
-        .then(res => {
-            const rows = res.rows;
-
-            rows.map(row => {
-                console.log(`Read: ${JSON.stringify(row)}`);
-            });
-
-            process.exit();
-        })
-        .catch(err => {
-            console.log(err);
-        });
-
-}
+//app.listen(4000, function () {
+    //console.log('Server is running.. on Port 4000');
+//});
