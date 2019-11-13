@@ -31,7 +31,7 @@ app.get('/', function (req, res) {
            res.status(400).send(err);
        } 
 	   
-	    //console.log(req.query.name); //get參數
+	    console.log(req.query.name); //get參數
        
        client.query('SELECT * FROM public.jinne' ,function(err,result) {
           //call `done()` to release the client back to the pool
