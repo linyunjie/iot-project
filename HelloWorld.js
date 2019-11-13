@@ -21,12 +21,18 @@ var config = {
 var data = {};
 var pool = new pg.Pool(config);
 
+// var keyName=request.query.name;
+
 app.get('/', function (req, res) {
+	
     pool.connect(function(err,client,done) {
        if(err){
            console.log("not able to get connection "+ err);
            res.status(400).send(err);
        } 
+	   
+	    //console.log(req.query.name); //get參數
+       
        client.query('SELECT * FROM public.jinne' ,function(err,result) {
           //call `done()` to release the client back to the pool
            done(); 
@@ -34,10 +40,20 @@ app.get('/', function (req, res) {
                console.log(err);
                res.status(400).send(err);
            }
-		   console.log("get connection ");
-           res.status(200).send(result.rows);
+		   
+		   data.user = result.rows[0];
+		   console.log(data.user);
+		   
+		   console.log("get connection "+JSON.stringify(result.rows[0]));
+           //res.status(200).send(result.rows[0]);
+		   res.render('index');
        });
     });
+});
+
+
+app.get('/about', function(req, res){
+  res.render('about',{data: data.user});
 });
 
 // check running enviroment
