@@ -2,6 +2,14 @@ var express = require('express');
 var app = express();
 var pg = require('pg');
 
+
+// prepare server
+
+app.use('/', express.static(__dirname + '/www')); // redirect root
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+
 var engine = require('ejs-locals');
 app.engine('ejs',engine);
 app.set('views','./views');
@@ -21,9 +29,21 @@ var config = {
 var data = {};
 var pool = new pg.Pool(config);
 
-// var keyName=request.query.name;
+app.use(express.static(__dirname + '/public'));
+
+app.get('/sensor', function(req, res){
+
+
+  
+});
+
+
+
+
 
 app.get('/', function (req, res) {
+
+  var keyName=req.query.name;
 	
     pool.connect(function(err,client,done) {
        if(err){
@@ -31,7 +51,7 @@ app.get('/', function (req, res) {
            res.status(400).send(err);
        } 
 	   
-	    console.log(req.query.name); //get參數
+	    console.log(keyName); //get參數
        
        client.query('SELECT * FROM public.jinne' ,function(err,result) {
           //call `done()` to release the client back to the pool
