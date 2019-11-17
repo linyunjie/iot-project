@@ -21,35 +21,37 @@
   <a href="./about">goto about</a> -->
 <div class="container">
 	
-		<nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
-		    <a class="navbar-brand" >智慧農業平台</a>
-		    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-		      <span class="navbar-toggler-icon"></span>
-		    </button> -->
-
-		    <div class="collapse navbar-collapse" id="navbarColor02">
-		      <ul class="navbar-nav mr-auto">
-		        <li class="nav-item active">
-		          <a class="nav-link" href="#">區域1 <span class="sr-only">(current)</span></a>
-		        </li>
-		        <li class="nav-item">
-		          <a class="nav-link" href="#">區域2</a>
-		        </li>
-		        <li class="nav-item">
-		          <a class="nav-link" href="#">區域3</a>
-		        </li>
-		       
-		      </ul>
-		      <!-- <form class="form-inline">
-		        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-		        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-		      </form> -->
-		    </div>
-		</nav>
+		
 	
 </div>
 
 	<div class="container">
+		
+			<nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
+		    <a class="navbar-brand" >智慧農業平台</a>
+		    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button> -->
+			    <div class="collapse navbar-collapse" id="navbarColor02">
+			      <ul class="navbar-nav mr-auto">
+			        <li class="nav-item active">
+			          <a class="nav-link" href="#">區域1 <span class="sr-only">(current)</span></a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link" href="#">區域2</a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link" href="#">區域3</a>
+			        </li>
+			       
+			      </ul>
+			      <!-- <form class="form-inline">
+			        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+			        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+			      </form> -->
+			    </div>
+			</nav>
+		
 		<div class="row" style="margin-top:20px;">
 		    <div class="col-sm ">
 		    		<div class="card">
@@ -73,13 +75,28 @@
 					<div class="card">
 						<div class="card-header bg-info text-white">感測數據</div>
 						<table class="table table-hover" style="margin-bottom:0;">
-						  <thead>
-							<tr>
-							  <th><h6>感測器</h6></th>
-							  <th><h6>感測值</h6></th>
-							  <th><h6>更新時間</h6></th>
-							</tr>
-						  </thead>
+							<thead>
+								<tr>
+								  <th><h6>感測器</h6></th>
+								  <th><h6>感測值</h6></th>
+								  <th><h6>更新時間</h6></th>
+								</tr>
+								<tr>
+					                <td>
+					                    <%= data.name  %>
+					                </td>
+					                <td>
+					                    <%= data.value  %>
+					                </td>
+					                <td>
+					                    <%= data.datetime  %>
+					                </td>
+					            </tr>
+					            
+					                
+					            
+							</thead>
+						</table>
 					</div>
 				
 		    </div>

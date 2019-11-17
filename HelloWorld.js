@@ -54,7 +54,7 @@ app.get('/', function (req, res) {
 	   
 	    console.log(keyName); //get參數
        
-       client.query('SELECT * FROM public.jinne' ,function(err,result) {
+       client.query('SELECT * FROM public.sensor' ,function(err,result) {
           //call `done()` to release the client back to the pool
            done(); 
            if(err){
@@ -62,12 +62,12 @@ app.get('/', function (req, res) {
                res.status(400).send(err);
            }
 		   
-		   data.user = result.rows[0];
-		   console.log(data.user);
+		   data = result.rows[0];
+		   console.log(data);
 		   
 		   console.log("get connection "+JSON.stringify(result.rows[0]));
            //res.status(200).send(result.rows[0]);
-		   res.render('index');
+		   res.render('index',{data: data});
        });
     });
 });
