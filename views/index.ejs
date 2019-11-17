@@ -81,20 +81,19 @@
 								  <th><h6>感測值</h6></th>
 								  <th><h6>更新時間</h6></th>
 								</tr>
-								<tr>
+								<% for ( var i = 0 ; i < data.length ; i++){ %>
+					            <tr>
 					                <td>
-					                    <%= data.name  %>
+					                    <%= data[i].name  %>
 					                </td>
 					                <td>
-					                    <%= data.value  %>
+					                    <%= data[i].value  %>
 					                </td>
 					                <td>
-					                    <%= data.datetime  %>
+					                    <%= data[i].datetime  %>
 					                </td>
 					            </tr>
-					            
-					                
-					            
+					            <% } %>
 							</thead>
 						</table>
 					</div>

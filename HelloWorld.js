@@ -62,10 +62,10 @@ app.get('/', function (req, res) {
                res.status(400).send(err);
            }
 		   
-		   data = result.rows[0];
+		   data = result.rows;
 		   console.log(data);
 		   
-		   console.log("get connection "+JSON.stringify(result.rows[0]));
+		   console.log("get connection "+JSON.stringify(result.rows));
            //res.status(200).send(result.rows[0]);
 		   res.render('index',{data: data});
        });
