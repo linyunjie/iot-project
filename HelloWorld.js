@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var pg = require('pg');
+var moment = require('moment');
 
 
 // prepare server
@@ -28,6 +29,9 @@ var config = {
 };
 
 var data = {};
+
+
+
 var pool = new pg.Pool(config);
 
 app.use(express.static(__dirname + '/public'));
@@ -41,11 +45,10 @@ app.get('/sensor', function(req, res){
 
 
 
-
 app.get('/', function (req, res) {
 
   var keyName=req.query.name;
-	
+
     pool.connect(function(err,client,done) {
        if(err){
            console.log("not able to get connection "+ err);
@@ -56,18 +59,24 @@ app.get('/', function (req, res) {
        
        client.query('SELECT * FROM public.sensor' ,function(err,result) {
           //call `done()` to release the client back to the pool
+           
            done(); 
            if(err){
                console.log(err);
                res.status(400).send(err);
            }
-		   
+
+        for (i = 0 ; i < result.rows.length ; i++){
+  		    var row = result.rows[i];
+         }
+      // console.log();
+
 		   data = result.rows;
-		   console.log(data);
-		   
+
 		   console.log("get connection "+JSON.stringify(result.rows));
            //res.status(200).send(result.rows[0]);
-		   res.render('index',{data: data});
+		   res.render('index',{data: data,moment: moment});
+
        });
     });
 });
