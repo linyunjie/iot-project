@@ -121,7 +121,7 @@ app.get('/sensor', function(req, res){
              
             
             });
-          client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '7 hour' and now()   " ,function(err,res) {
+          client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 hour' and now()   " ,function(err,res) {
                       //call `done()` to release the client back to the pool
                     done(); 
                     if(err){
