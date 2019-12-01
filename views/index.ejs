@@ -147,7 +147,7 @@
 				// $('table:eq(0) tbody').text(data.data[1].value );
 				for(var i in data.data){
 					$('table:eq(0) tbody  tr.'+data.data[i].name+' td.value').text(data.data[i].value);
-					$('table:eq(0) tbody  tr.'+data.data[i].name+' td.time').text(moment(data.data[i].datetime).format('YYYY-MM-DD HH:mm:ss'));
+					$('table:eq(0) tbody  tr.'+data.data[i].name+' td.time').text(moment.utc(data.data[i].datetime).format('YYYY-MM-DD HH:mm:ss'));
 				}
 	       
 	            console.log( "setInterval of data");
@@ -327,9 +327,9 @@
 	        
 	    },
 
-	    // time: {
-	    //     useUTC: false
-	    // },
+	    time: {
+	        useUTC: false
+	    },
 
 	    title: {
 	        text: ''
