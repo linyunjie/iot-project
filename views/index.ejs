@@ -407,7 +407,7 @@
           .done(function( data ) {
 			for(var i in data.chartdata){
 
-				datetime = moment(data.chartdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
+				datetime = moment.utc(data.chartdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
 
 				datetime = datetime.split(' ');
 				date=datetime[0].split('-');
