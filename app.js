@@ -29,10 +29,9 @@ var config = {
     ssl: true
 };
 
+var creatdata ={};
 var data = {};
-
-var test = {};
-
+var chartdata = {};
 
 
 var pool = new pg.Pool(config);
@@ -40,7 +39,66 @@ var pool = new pg.Pool(config);
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/sensor', function(req, res){ //更新感測器數據
+app.get('/update', function(req, res){
+
+
+  var temp = req.query.temp;
+  var hum = req.query.hum;
+  // var sql = {
+  //   temp:req.query.temp
+  // };
+
+  pool.connect(function(err,client,done) {
+           if(err){
+               console.log("not able to get connection "+ err);
+               res.status(400).send(err);
+           } 
+
+            
+            client.query("UPDATE sensor SET value = $1 WHERE name = 'Temperature'", [temp], function(err,result) {
+                //call `done()` to release the client back to the pool
+                 
+                 // done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+
+             console.log("temp="+temp);
+
+            });
+
+            client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
+                //call `done()` to release the client back to the pool
+                 
+                 // done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+            });
+
+
+            client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
+                //call `done()` to release the client back to the pool
+                 
+                 done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+
+             console.log("hum="+hum);
+
+            });
+
+            res.send("Data update ok");
+
+        }); 
+});
+
+
+app.get('/sensor', function(req, res){
 
   pool.connect(function(err,client,done) {
            if(err){
@@ -50,27 +108,42 @@ app.get('/sensor', function(req, res){ //更新感測器數據
 
             client.query('SELECT * FROM public.sensor' ,function(err,result) {
                 //call `done()` to release the client back to the pool
-                
-                 done(); 
+                 
+                 
                  if(err){
                      console.log(err);
                      res.status(400).send(err);
                  }
              data = result.rows;
 
-             console.log("get connection "+JSON.stringify(result.rows));
-
-             res.json({data: data,moment: moment});
+             console.log("update sensordata ");
+               
+             
             
             });
+          client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '7 hour' and now()   " ,function(err,res) {
+                      //call `done()` to release the client back to the pool
+                    done(); 
+                    if(err){
+                      console.log(err);
+                      res.status(400).send(err);
+                    }
+
+                  chartdata =  res.rows;
+
+                  console.log("set chartdata");
+
+                });
         }); 
+
+  res.json({data: data,moment: moment,chartdata: chartdata});
+
 });
 
 
-  app.get('/', function (req, res) {  //在網頁顯示感測資料
 
-    var value = req.query.value;
-   
+  app.get('/', function (req, res) {
+
     pool.connect(function(err,client,done) {
            if(err){
                console.log("not able to get connection "+ err);
@@ -81,55 +154,21 @@ app.get('/sensor', function(req, res){ //更新感測器數據
           
             client.query('SELECT * FROM public.sensor' ,function(err,result) {
                 //call `done()` to release the client back to the pool
-                 
                  done(); 
                  if(err){
                      console.log(err);
                      res.status(400).send(err);
                  }
 
-            // for (i = 0 ; i < result.rows.length ; i++){
-              // var row = result.rows[i];
-            //  }
-            // console.log();
+             creatdata = result.rows;
 
-             data = result.rows;
+             console.log("get connection  "+JSON.stringify(result.rows));
 
-             console.log("get connection "+JSON.stringify(result.rows));
-                 //res.status(200).send(result.rows[0]);
-             // setInterval(function() {
-             res.render('index',{data: data,moment: moment});
-             // }, 3000);
+             res.render('index',{creatdata: creatdata,moment: moment});
             });
+    }); 
+});
 
-
-            client.query('UPDATE sensor SET value = 'value' WHERE name = "Temperature"' ,function(err,result) {
-                //call `done()` to release the client back to the pool
-                
-                 done(); 
-                 if(err){
-                     console.log(err);
-                     res.status(400).send(err);
-                }
-
-            // for (i = 0 ; i < result.rows.length ; i++){
-            // var row = result.rows[i];
-            // }
-            // console.log();
-
-             console.log(value);
-            });
-
-
-        }); 
-  });
-
-
-
-
-
-
-    
 // app.get('/', function (req, res) {
 
 //   var keyName=req.query.name;
@@ -166,9 +205,9 @@ app.get('/sensor', function(req, res){ //更新感測器數據
 // });
 
 
-app.get('/about', function(req, res){
-  res.render('about',{data: data.user});
-});
+// app.get('/about', function(req, res){
+//   res.render('about',{data: data.user});
+// });
 
 // check running enviroment
 var port = process.env.PORT || 3000;

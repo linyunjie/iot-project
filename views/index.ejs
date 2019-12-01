@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/css/gauge.css">
   <link rel="stylesheet" href="/css/highchart.css">
   <link rel="stylesheet" href="/css/highchart2.css">
-
+	
  
 </head>
 
@@ -75,34 +75,42 @@
 					<div class="card">
 						<div class="card-header bg-info text-white">感測數據</div>
 						<table class="table table-hover" style="margin-bottom:0;">
-							<thead>
-								<tr>
-								  <th><h6>感測器</h6></th>
-								  <th><h6>感測值</h6></th>
-								  <th><h6>更新時間</h6></th>
-								</tr>
-								<% for ( var i = 0 ; i < data.length ; i++){ %>
-					            <tr>
-					                <td>
-					                    <%= data[i].name  %>
-					                </td>
-					                <td>
-					                    <%= data[i].value  %>
-					                </td>
-					                <td>
-					                    <%= moment(data[i].datetime).format('YYYY-MM-DD HH:mm:ss')  %>
-					                </td>
-					            </tr>
-					            <% } %>
-							</thead>
+
+								<thead>
+									<tr>
+									  <th><h6>感測器</h6></th>
+									  <th><h6>數值</h6></th>
+									  <th><h6>更新時間</h6></th>
+									  <!-- <th><h6>test</h6></th> -->
+									</tr>
+									<tbody>
+										<% for ( var i = 0 ; i < creatdata.length ; i++){ %>
+							            <tr class= "<%= creatdata[i].name  %>" >
+							                <td >
+							                    <%= creatdata[i].name  %>
+							                </td>
+							                <td class="value">
+							                    <%= creatdata[i].value  %>
+							                </td>
+							                <td class="time">
+							                    <%= moment(creatdata[i].datetime).format('YYYY-MM-DD HH:mm:ss')  %>
+							                </td>
+							            </tr>
+							            <% } %>
+						            </tbody>
+								</thead>
+				  			
 						</table>
 					</div>
 				
 		    </div>
 		</div><!-- row end-->
 	</div> <!-- container end-->
- 
+
+	
 </body>
+
+	
 <!-- jQuery library -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 <!-- Popper JS -->
@@ -119,6 +127,36 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+
+<script>
+	// setInterval(function(){
+	// 	temp_chart();
+		
+	// },2000);
+	$(function(){
+
+		temp_chart();
+
+	});
+
+	setInterval(function(){
+	     $.ajax({
+	             url: "/sensor"
+	          })
+	          .done(function( data ) {
+				// $('table:eq(0) tbody').text(data.data[1].value );
+				for(var i in data.data){
+					$('table:eq(0) tbody  tr.'+data.data[i].name+' td.value').text(data.data[i].value);
+					$('table:eq(0) tbody  tr.'+data.data[i].name+' td.time').text(moment(data.data[i].datetime).format('YYYY-MM-DD HH:mm:ss'));
+				}
+	       
+	            console.log( "setInterval of data");
+	            // console.log(data.data);
+	           
+	          });
+	},5000);
+</script>
+
 
 <script>
 	var gaugeOptions = {
@@ -273,93 +311,138 @@
 	    }
 	}, 2000);
 
-	Highcharts.chart('container', {
-    chart: {
-        type: 'spline',
-        animation: Highcharts.svg, // don't animate in old IE
-        marginRight: 10,
-        events: {
-            load: function () {
 
-                // set up the updating of the chart each second
-                var series = this.series[0];
-                setInterval(function () {
-                    var x = (new Date()).getTime(), // current time
-                        y = Math.random();
-                    series.addPoint([x, y], true, true);
-                }, 1000);
-            }
-        }
-    },
+	function appendPoint(chart,date,temp,shift) {
+	chart.series[0].addPoint([date, temp], false, shift);
+	}
 
-    time: {
-        useUTC: false
-    },
+	function temp_chart(){
+	// Highcharts.chart('container', {
+	var options = {
+	    chart: {
+	    	renderTo: 'container', //顯示在哪一區域
+	        type: 'spline',
+	        // animation: Highcharts.svg, // don't animate in old IE
+	        // marginRight: 10,
+	        
+	    },
 
-    title: {
-        text: 'Live random data'
-    },
+	    // time: {
+	    //     useUTC: false
+	    // },
 
-    accessibility: {
-        announceNewData: {
-            enabled: true,
-            minAnnounceInterval: 15000,
-            announcementFormatter: function (allSeries, newSeries, newPoint) {
-                if (newPoint) {
-                    return 'New point added. Value: ' + newPoint.y;
-                }
-                return false;
-            }
-        }
-    },
+	    title: {
+	        text: ''
+	    },
 
-    xAxis: {
-        type: 'datetime',
-        tickPixelInterval: 150
-    },
+	    // accessibility: {
+	    //     announceNewData: {
+	    //         enabled: true,
+	    //         minAnnounceInterval: 15000,
+	    //         announcementFormatter: function (allSeries, newSeries, newPoint) {
+	    //             if (newPoint) {
+	    //                 return 'New point added. Value: ' + newPoint.y;
+	    //             }
+	    //             return false;
+	    //         }
+	    //     }
+	    // },
 
-    yAxis: {
-        title: {
-            text: 'Value'
+	    xAxis: {
+	    	title:{
+					text:"時間"
+				},
+	        type: 'datetime',
+	        // tickPixelInterval: 150
+	        
+
+	        labels: {
+					formatter: function() {
+						return Highcharts.dateFormat('%H:%M:%S', this.value);
+					}
+				}
+	    },
+
+	    yAxis: {
+	    	
+	        title: {
+	            text: '溫度'
+	        },
+	        // plotLines: [{
+	        //     value: 0,
+	        //     width: 1,
+	        //     color: '#808080'
+	        // }]
+	    },
+
+	    // tooltip: {
+	    //     headerFormat: '<b>{series.name}</b><br/>',
+	    //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+	    // },
+
+	    credits : {
+
+                enabled:false
+
         },
-        plotLines: [{
-            value: 0,
-            width: 1,
-            color: '#808080'
-        }]
-    },
 
-    tooltip: {
-        headerFormat: '<b>{series.name}</b><br/>',
-        pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-    },
+	    legend: {
+	        enabled: false
+	    },
 
-    legend: {
-        enabled: false
-    },
+	    exporting: {
+	        enabled: false
+	    },
 
-    exporting: {
-        enabled: false
-    },
+	    series: [{
+	        name: 'temp'
+	    }]
+	};
 
-    series: [{
-        name: 'Random data',
-        data: (function () {
-            // generate an array of random data
-            var data = [],
-                time = (new Date()).getTime(),
-                i;
+	tempchart = new Highcharts.Chart(options)
 
-            for (i = -19; i <= 0; i += 1) {
-                data.push({
-                    x: time + i * 1000,
-                    y: Math.random()
-                });
-            }
-            return data;
-        }())
-    }]
-});
+	$.ajax({
+             url: "/sensor"
+          })
+          .done(function( data ) {
+			for(var i in data.chartdata){
+
+				datetime = moment(data.chartdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
+
+				datetime = datetime.split(' ');
+				date=datetime[0].split('-');
+				time=datetime[1].split(':');
+				date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
+
+	          	appendPoint(tempchart,date,data.chartdata[i].value);
+	          	console.log(date);
+			}
+            
+            tempchart.redraw();	
+          });
+   
+
+	// $.ajax({
+	// 	type : 'get',
+	// 	url : "/"//请求数据的地址
+	// 	success : function(test) {
+
+	// 		console.log( test.test);
+			
+	// 		// var json = eval("(" + data + ")");
+ 
+	// 		// for ( var i in json.list) {
+	// 		// 	json.list[key].y = json.list[key].count; //给Y轴赋值
+	// 		// 	xtext = json.list[key].name;//给X轴TEXT赋值
+	// 		// 	json.list[key].color = color[key];
+	// 		// }
+	// 		// chart.series[0].setData(json.list);//数据填充到highcharts上面
+	// 	},
+	// 	error : function(e) {
+	// 	}
+	// });
+
+}
 
 
 	Highcharts.chart('container2', {
