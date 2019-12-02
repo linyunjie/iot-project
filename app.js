@@ -109,7 +109,7 @@ app.get('/sensor', function(req, res){
             client.query('SELECT * FROM public.sensor' ,function(err,result) {
                 //call `done()` to release the client back to the pool
                  
-                 
+                 done(); 
                  if(err){
                      console.log(err);
                      res.status(400).send(err);
@@ -117,30 +117,34 @@ app.get('/sensor', function(req, res){
              data = result.rows;
 
              console.log("update sensordata ");
-               
-             
-            
+
             });
-          client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
+        }); 
+
+  res.json({data: data,moment: moment});
+
+});
+
+app.get('/chartdata', function (req, res) {
+    pool.connect(function(err,client,done) {
+           if(err){
+               console.log("not able to get connection "+ err);
+               res.status(400).send(err);
+           } 
+
+              client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
                       //call `done()` to release the client back to the pool
                     done(); 
                     if(err){
                       console.log(err);
                       res.status(400).send(err);
                     }
-
                   chartdata =  res.rows;
-
                   console.log("set chartdata");
-
-                });
-        }); 
-
-  res.json({data: data,moment: moment,chartdata: chartdata});
-
+              });
+            res.json({chartdata: chartdata,moment: moment});
+         });
 });
-
-
 
   app.get('/', function (req, res) {
 

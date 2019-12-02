@@ -129,17 +129,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
 
 <script>
-	// setInterval(function(){
-	// 	temp_chart();
-		
-	// },2000);
+	
 	$(function(){
 
-		temp_chart();
+		// temp_chart();
 
-	});
-
-	setInterval(function(){
+		setInterval(function(){
 	     $.ajax({
 	             url: "/sensor"
 	          })
@@ -155,6 +150,18 @@
 	           
 	          });
 	},5000);
+
+	temp_chart();
+	console.log("456");
+
+	setInterval(function(){
+		requestData();
+	},10000);
+
+ 	// console.log("123");
+	});
+
+	
 </script>
 
 
@@ -312,8 +319,8 @@
 	}, 2000);
 
 
-	function appendPoint(chart,date,temp,shift) {
-	chart.series[0].addPoint([date, temp], false, shift);
+	function appendPoint(chart,date,temp,) {
+	chart.series[0].addPoint([date, temp] , true,chart.series[0].points.length > 4 ,true);
 	}
 
 	function temp_chart(){
@@ -322,6 +329,13 @@
 	    chart: {
 	    	renderTo: 'container', //顯示在哪一區域
 	        type: 'spline',
+	        events: {
+	        	load: requestData
+
+	                // set up the updating of the chart each second
+	                
+	            
+	        }
 	        // animation: Highcharts.svg, // don't animate in old IE
 	        // marginRight: 10,
 	        
@@ -335,18 +349,6 @@
 	        text: ''
 	    },
 
-	    // accessibility: {
-	    //     announceNewData: {
-	    //         enabled: true,
-	    //         minAnnounceInterval: 15000,
-	    //         announcementFormatter: function (allSeries, newSeries, newPoint) {
-	    //             if (newPoint) {
-	    //                 return 'New point added. Value: ' + newPoint.y;
-	    //             }
-	    //             return false;
-	    //         }
-	    //     }
-	    // },
 
 	    xAxis: {
 	    	title:{
@@ -375,15 +377,8 @@
 	        // }]
 	    },
 
-	    // tooltip: {
-	    //     headerFormat: '<b>{series.name}</b><br/>',
-	    //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-	    // },
-
 	    credits : {
-
                 enabled:false
-
         },
 
 	    legend: {
@@ -401,47 +396,48 @@
 
 	tempchart = new Highcharts.Chart(options)
 
-	$.ajax({
-             url: "/sensor"
-          })
-          .done(function( data ) {
-			for(var i in data.chartdata){
-
-				datetime = moment.utc(data.chartdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
-
-				datetime = datetime.split(' ');
-				date=datetime[0].split('-');
-				time=datetime[1].split(':');
-				date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
-
-	          	appendPoint(tempchart,date,data.chartdata[i].value);
-	          	console.log(date);
-			}
-            
-            tempchart.redraw();	
-          });
-   
-
 	// $.ajax({
-	// 	type : 'get',
-	// 	url : "/"//请求数据的地址
-	// 	success : function(test) {
+ //             url: "/sensor"
+ //          })
+ //          .done(function( data ) {
+	// 		for(var i in data.chartdata){
 
-	// 		console.log( test.test);
-			
-	// 		// var json = eval("(" + data + ")");
- 
-	// 		// for ( var i in json.list) {
-	// 		// 	json.list[key].y = json.list[key].count; //给Y轴赋值
-	// 		// 	xtext = json.list[key].name;//给X轴TEXT赋值
-	// 		// 	json.list[key].color = color[key];
-	// 		// }
-	// 		// chart.series[0].setData(json.list);//数据填充到highcharts上面
-	// 	},
-	// 	error : function(e) {
-	// 	}
-	// });
+	// 			datetime = moment.utc(data.chartdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
 
+	// 			datetime = datetime.split(' ');
+	// 			date=datetime[0].split('-');
+	// 			time=datetime[1].split(':');
+	// 			date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
+
+	//           	appendPoint(tempchart,date,data.chartdata[i].value);
+	//           	console.log(date);
+	// 		}
+ //            tempchart.redraw();
+             
+ //          });
+}
+
+function requestData() {
+	$.ajax({
+	             url: "/chartdata"
+	          })
+	          .done(function( data ) {
+				for(var i in data.chartdata){
+
+					datetime = moment.utc(data.chartdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
+
+					datetime = datetime.split(' ');
+					date=datetime[0].split('-');
+					time=datetime[1].split(':');
+					date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
+
+		          	appendPoint(tempchart,date,data.chartdata[i].value);
+		          	console.log(date);
+				}
+	            tempchart.redraw();
+	             
+	          });
+	          console.log("123");
 }
 
 
