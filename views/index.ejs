@@ -153,12 +153,15 @@
 
 	temp_chart();
 	hum_chart();
-	
+
 	console.log("456");
 
 	setInterval(function(){
 		requestTempChart();
-	},10000);
+	},5000);
+	setInterval(function(){
+		requestHumchart();
+	},5000);
 
  	// console.log("123");
 	});
