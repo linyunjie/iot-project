@@ -31,7 +31,8 @@ var config = {
 
 var creatdata ={};
 var data = {};
-var chartdata = {};
+var tempdata = {};
+var humdata = {};
 
 
 var pool = new pg.Pool(config);
@@ -68,6 +69,19 @@ app.get('/update', function(req, res){
 
             });
 
+            client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
+                //call `done()` to release the client back to the pool
+                 
+                 // done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+
+             console.log("hum="+hum);
+
+            });
+
             client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
                 //call `done()` to release the client back to the pool
                  
@@ -78,8 +92,7 @@ app.get('/update', function(req, res){
                  }
             });
 
-
-            client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
+             client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
                 //call `done()` to release the client back to the pool
                  
                  done(); 
@@ -87,12 +100,12 @@ app.get('/update', function(req, res){
                      console.log(err);
                      res.status(400).send(err);
                  }
-
-             console.log("hum="+hum);
-
             });
 
-            res.send("Data update ok");
+
+            
+
+            res.send("Data update&insert ok");
 
         }); 
 });
@@ -134,15 +147,30 @@ app.get('/chartdata', function (req, res) {
 
               client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
                       //call `done()` to release the client back to the pool
+                     
+                    if(err){
+                      console.log(err);
+                      res.status(400).send(err);
+                    }
+                  tempdata =  res.rows;
+                  
+              });
+
+              client.query("SELECT value,datetime FROM history WHERE name = 'humidity' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
+                      //call `done()` to release the client back to the pool
                     done(); 
                     if(err){
                       console.log(err);
                       res.status(400).send(err);
                     }
-                  chartdata =  res.rows;
+                  humdata =  res.rows;
                   console.log("set chartdata");
               });
-            res.json({chartdata: chartdata,moment: moment});
+
+
+
+              
+            res.json({tempdata: tempdata ,moment: moment, humdata: humdata});
          });
 });
 
