@@ -146,8 +146,8 @@ app.get('/chartdata', function (req, res) {
            } 
 
               client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
-                      //call `done()` to release the client back to the pool
-                     
+                      //call `done()` to release the client back to the pool 
+                                           
                     if(err){
                       console.log(err);
                       res.status(400).send(err);

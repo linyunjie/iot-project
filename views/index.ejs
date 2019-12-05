@@ -16,6 +16,8 @@
  
 </head>
 
+
+
 <body>
   <!-- <h1>Hello world i am h1 tag<h1>
   <a href="./about">goto about</a> -->
@@ -66,7 +68,7 @@
 					<!-- <figure class="highcharts-figure"> -->
 						<div class="card">
 							<div class="card-header bg-info text-white">圖表數據</div>
-							<div id="container" style="margin-top:10px;"></div>
+							<div id="container1" style="margin-top:10px;"></div>
 							<div id="container2" style="margin-top:10px;"></div>
 					    </div>
 					<!-- </figure> -->
@@ -108,7 +110,7 @@
 	</div> <!-- container end-->
 
 	
-</body>
+
 
 	
 <!-- jQuery library -->
@@ -152,10 +154,9 @@
 	},5000);
 
 	temp_chart();
+	temp_chart();
 	hum_chart();
-
-	console.log("456");
-
+	
 	setInterval(function(){
 		requestTempChart();
 	},60000);
@@ -325,27 +326,20 @@
 
 
 	function appendPoint(chart,date,temp,) {
-	chart.series[0].addPoint([date, temp] , true,chart.series[0].points.length > 15 ,true);
+	chart.series[0].addPoint([date, temp] , true,chart.series[0].points.length > 20 ,true);
 	}
 
 	function temp_chart(){
-		// Highcharts.chart('container', {
-		var options = {
+	 	var options = {
+		// Highcharts.chart('container2', {
 		    chart: {
-		    	renderTo: 'container', //顯示在哪一區域
 		        type: 'spline',
 		        animation: Highcharts.svg, // don't animate in old IE
-	        	marginRight: 10,
+		        renderTo: 'container1', //顯示在哪一區域
+		        marginRight: 10,
 		        events: {
-		        	load: requestTempChart
-
-		                // set up the updating of the chart each second
-		                
-		            
+		            load: requestTempChart
 		        }
-		        // animation: Highcharts.svg, // don't animate in old IE
-		        // marginRight: 10,
-		        
 		    },
 
 		    time: {
@@ -356,25 +350,37 @@
 		        text: '空氣溫度'
 		    },
 
+		    // accessibility: {
+		    //     announceNewData: {
+		    //         enabled: true,
+		    //         minAnnounceInterval: 15000,
+		    //         announcementFormatter: function (allSeries, newSeries, newPoint) {
+		    //             if (newPoint) {
+		    //                 return 'New point added. Value: ' + newPoint.y;
+		    //             }
+		    //             return false;
+		    //         }
+		    //     }
+		    // },
 
 		    xAxis: {
+
 		    	title:{
 						text:"時間"
 					},
+
 		        type: 'datetime',
 		        // tickPixelInterval: 150
-		        
 
 		        labels: {
 						formatter: function() {
 							return Highcharts.dateFormat('%H:%M:%S', this.value);
 						}
-					}
+				}
+
 		    },
 
 		    yAxis: {
-
-		    	
 		        title: {
 		            text: '溫度'
 		        },
@@ -385,9 +391,10 @@
 		        // }]
 		    },
 
-		    credits : {
-	                enabled:false
-	        },
+		    // tooltip: {
+		    //     headerFormat: '<b>{series.name}</b><br/>',
+		    //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+		    // },
 
 		    legend: {
 		        enabled: false
@@ -397,17 +404,38 @@
 		        enabled: false
 		    },
 
+		    credits : {
+	            enabled:false
+	        },
+
 		    series: [{
-		        name: 'temp'
+		        name: 'temperature'
+		        // data: (function () {
+		        //     // generate an array of random data
+		        //     var data = [],
+		        //         time = (new Date()).getTime(),
+		        //         i;
+
+		        //     for (i = -19; i <= 0; i += 1) {
+		        //         data.push({
+		        //             x: time + i * 1000,
+		        //             y: Math.random()
+		        //         });
+		        //     }
+		        //     return data;
+		        // }())
 		    }]
 		};
 
 		tempchart = new Highcharts.Chart(options);
+	// tempchart.redraw();
+	// });
 	}
+
 
 	function requestTempChart() {
 		$.ajax({
-		             url: "/chartdata"
+		        url: "/chartdata"
 		          })
 		          .done(function( data ) {
 					for(var i in data.tempdata){
@@ -533,7 +561,7 @@
 
 	function requestHumchart() {
 		$.ajax({
-		             url: "/chartdata"
+		        url: "/chartdata"
 		          })
 		          .done(function( data ) {
 					for(var i in data.humdata){
@@ -554,5 +582,5 @@
 		          console.log("123");
 	}
 </script>
-
+</body>
 </html>
