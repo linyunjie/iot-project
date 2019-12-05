@@ -158,10 +158,10 @@
 
 	setInterval(function(){
 		requestTempChart();
-	},5000);
+	},60000);
 	setInterval(function(){
 		requestHumchart();
-	},5000);
+	},60000);
 
  	// console.log("123");
 	});
@@ -325,7 +325,7 @@
 
 
 	function appendPoint(chart,date,temp,) {
-	chart.series[0].addPoint([date, temp] , true,chart.series[0].points.length > 4 ,true);
+	chart.series[0].addPoint([date, temp] , true,chart.series[0].points.length > 15 ,true);
 	}
 
 	function temp_chart(){
