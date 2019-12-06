@@ -194,7 +194,7 @@ app.get('/chartdata', function (req, res) {
 
              creatdata = result.rows;
 
-             // console.log("get connection  "+JSON.stringify(result.rows));
+             console.log("get connection  "+JSON.stringify(result.rows));
 
              res.render('index',{creatdata: creatdata,moment: moment});
             });
