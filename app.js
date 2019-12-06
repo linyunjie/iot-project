@@ -129,7 +129,7 @@ app.get('/sensor', function(req, res){
                  }
              data = result.rows;
 
-             console.log("update sensordata ");
+             // console.log("update sensordata ");
 
             });
         }); 
@@ -164,7 +164,7 @@ app.get('/chartdata', function (req, res) {
                       res.status(400).send(err);
                     }
                   humdata =  res.rows;
-                  console.log("set chartdata");
+                  // console.log("set chartdata");
               });
 
 
@@ -194,7 +194,7 @@ app.get('/chartdata', function (req, res) {
 
              creatdata = result.rows;
 
-             console.log("get connection  "+JSON.stringify(result.rows));
+             // console.log("get connection  "+JSON.stringify(result.rows));
 
              res.render('index',{creatdata: creatdata,moment: moment});
             });

@@ -193,6 +193,10 @@
 	        }
 	    },
 
+	    credits : {
+	        enabled:false
+	    },
+
 	    exporting: {
 	        enabled: false
 	    },
@@ -204,9 +208,10 @@
 	    // the value axis
 	    yAxis: {
 	        stops: [
-	            [0.1, '#55BF3B'], // green
-	            [0.5, '#DDDF0D'], // yellow
-	            [0.9, '#DF5353'] // red
+	            [0.1, '#2894FF'], // blue
+	            [0.3, '#55BF3B'], // green
+	            [0.6, '#DDDF0D'], // yellow
+	            [0.8, '#DF5353'] // red
 	        ],
 	        lineWidth: 0,
 	        tickWidth: 0,
@@ -235,9 +240,9 @@
 	var chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
 	    yAxis: {
 	        min: 0,
-	        max: 200,
+	        max: 60,
 	        title: {
-	            text: 'Speed'
+	            text: '溫度'
 	        }
 	    },
 
@@ -246,17 +251,17 @@
 	    },
 
 	    series: [{
-	        name: 'Speed',
-	        data: [80],
+	        name: '溫度',
+	        data: [0],
 	        dataLabels: {
 	            format:
 	                '<div style="text-align:center">' +
 	                '<span style="font-size:25px">{y}</span><br/>' +
-	                '<span style="font-size:12px;opacity:0.4">km/h</span>' +
+	                '<span style="font-size:12px;opacity:0.4">℃</span>' +
 	                '</div>'
 	        },
 	        tooltip: {
-	            valueSuffix: ' km/h'
+	            valueSuffix: ' ℃'
 	        }
 	    }]
 
@@ -266,26 +271,26 @@
 	var chartRpm = Highcharts.chart('container-rpm', Highcharts.merge(gaugeOptions, {
 	    yAxis: {
 	        min: 0,
-	        max: 5,
+	        max: 100,
 	        title: {
-	            text: 'RPM'
+	            text: '濕度'
 	        }
 	    },
 
 	    series: [{
-	        name: 'RPM',
-	        data: [1],
+	        name: '濕度',
+	        data: [0],
 	        dataLabels: {
 	            format:
 	                '<div style="text-align:center">' +
 	                '<span style="font-size:25px">{y:.1f}</span><br/>' +
 	                '<span style="font-size:12px;opacity:0.4">' +
-	                '* 1000 / min' +
+	                '%RH'+
 	                '</span>' +
 	                '</div>'
 	        },
 	        tooltip: {
-	            valueSuffix: ' revolutions/min'
+	            valueSuffix: ' %RH'
 	        }
 	    }]
 
@@ -295,34 +300,28 @@
 	setInterval(function () {
 	    // Speed
 	    var point,
-	        newVal,
-	        inc;
+	        tempVal,
+	        humVal;
 
-	    if (chartSpeed) {
-	        point = chartSpeed.series[0].points[0];
-	        inc = Math.round((Math.random() - 0.5) * 100);
-	        newVal = point.y + inc;
-
-	        if (newVal < 0 || newVal > 200) {
-	            newVal = point.y - inc;
-	        }
-
-	        point.update(newVal);
-	    }
-
-	    // RPM
-	    if (chartRpm) {
-	        point = chartRpm.series[0].points[0];
-	        inc = Math.random() - 0.5;
-	        newVal = point.y + inc;
-
-	        if (newVal < 0 || newVal > 5) {
-	            newVal = point.y - inc;
-	        }
-
-	        point.update(newVal);
-	    }
-	}, 2000);
+			$.ajax({
+	             url: "/sensor"
+	        })
+	        .done(function( data ) {
+				// $('table:eq(0) tbody').text(data.data[1].value );
+				if (chartSpeed) {
+	 				point = chartSpeed.series[0].points[0];
+					tempVal = data.data[0].value;
+					point.update(tempVal);
+		            // console.log(newVal);
+	        	}
+	        	if (chartRpm) {
+					point = chartRpm.series[0].points[0];
+					humVal = data.data[1].value;
+					point.update(humVal);
+		            // console.log(newVal);
+	        	}
+	        });
+	}, 5000);
 
 
 	function appendPoint(chart,date,temp,) {
@@ -423,20 +422,6 @@
 
 		    series: [{
 		        name: 'temperature'
-		        // data: (function () {
-		        //     // generate an array of random data
-		        //     var data = [],
-		        //         time = (new Date()).getTime(),
-		        //         i;
-
-		        //     for (i = -19; i <= 0; i += 1) {
-		        //         data.push({
-		        //             x: time + i * 1000,
-		        //             y: Math.random()
-		        //         });
-		        //     }
-		        //     return data;
-		        // }())
 		    }]
 		};
 
