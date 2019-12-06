@@ -155,7 +155,7 @@
 
 	temp_chart();
 	temp_chart();
-	hum_chart();
+	hum_chart(); 
 	
 	setInterval(function(){
 		requestTempChart();
@@ -342,6 +342,15 @@
 		        }
 		    },
 
+			plotOptions: {
+		        series: {
+		            marker: {
+		                enabled: false
+		            }
+		        }
+		    },
+
+
 		    time: {
 		        useUTC: true
 		    },
@@ -469,6 +478,14 @@
 		        }
 		    },
 
+		    plotOptions: {
+		        series: {
+		            marker: {
+		                enabled: false
+		            }
+		        }
+		    },
+
 		    time: {
 		        useUTC: true
 		    },
@@ -476,6 +493,15 @@
 		    title: {
 		        text: '空氣濕度'
 		    },
+
+		    plotOptions: {
+		        series: {
+		            marker: {
+		                enabled: false
+		            }
+		        }
+		    },
+
 
 		    // accessibility: {
 		    //     announceNewData: {
