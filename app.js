@@ -28,7 +28,9 @@ var config = {
     port: 5432,
     ssl: true
 };
-
+var datachname ={
+  chname:[],
+};
 var creatdata ={};
 var data = {};
 var tempdata = {};
@@ -82,25 +84,25 @@ app.get('/update', function(req, res){
 
             });
 
-            client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
-                //call `done()` to release the client back to the pool
+            // client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
+            //     //call `done()` to release the client back to the pool
                  
-                 // done(); 
-                 if(err){
-                     console.log(err);
-                     res.status(400).send(err);
-                 }
-            });
+            //      // done(); 
+            //      if(err){
+            //          console.log(err);
+            //          res.status(400).send(err);
+            //      }
+            // });
 
-             client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
-                //call `done()` to release the client back to the pool
+            //  client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
+            //     //call `done()` to release the client back to the pool
                  
-                 done(); 
-                 if(err){
-                     console.log(err);
-                     res.status(400).send(err);
-                 }
-            });
+            //      done(); 
+            //      if(err){
+            //          console.log(err);
+            //          res.status(400).send(err);
+            //      }
+            // });
 
 
             
@@ -191,10 +193,17 @@ app.get('/chartdata', function (req, res) {
                      console.log(err);
                      res.status(400).send(err);
                  }
+            
+            creatdata = result.rows;
 
-             creatdata = result.rows;
+            // for(var i = 0; i < result.rows.length; i++){
 
-             console.log("get connection  "+JSON.stringify(result.rows));
+              datachname.addchname = result.rows[0].name;
+              datachname.addchname = result.rows[1].name;
+            // }
+
+            console.log(datachname);
+            console.log("get connection  "+JSON.stringify(result.rows));
 
              res.render('index',{creatdata: creatdata,moment: moment});
             });
