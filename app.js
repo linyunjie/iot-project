@@ -74,7 +74,7 @@ app.get('/update', function(req, res){
             client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
                 //call `done()` to release the client back to the pool
                  
-                 // done(); 
+                 done(); 
                  if(err){
                      console.log(err);
                      res.status(400).send(err);
