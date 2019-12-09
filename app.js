@@ -26,7 +26,16 @@ app.set('view engine','ejs');
 
 
 bot.on('message', function(event) {
-  console.log(event); //把收到訊息的 event 印出來看看
+   if (event.message.type = 'text') {
+    var msg = event.message.text;
+    event.reply(msg).then(function(data) {
+      // success 
+      console.log(msg);
+    }).catch(function(error) {
+      // error 
+      console.log('error');
+    });
+  }
 });
 
 const linebotParser = bot.parser();
