@@ -2,11 +2,17 @@ var express = require('express');
 var app = express();
 var pg = require('pg');
 var moment = require('moment');
+var linebot = require('linebot');
 
+
+var bot = linebot({
+  channelId: '1653596866',
+  channelSecret: '23f49e04f290f01d7960086188bff0d3',
+  channelAccessToken: 'YW+v70OLwnVOIipHZIDMY2QS6JZkIYIxdXbNJwgaet4rR8Isb3Nqa6pP0hf6UPG035RSx39XMG31FERr655oKd1ab2600LzMgKwfLhGZGQ7XM1hZUUam0vNfgIPwsQVEeM9GyvLj/ljQ22P9lxUpawdB04t89/1O/w1cDnyilFU='
+});
 
 
 // prepare server
-
 app.use('/css', express.static(__dirname + '/htmlcss'));
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
@@ -17,6 +23,14 @@ var engine = require('ejs-locals');
 app.engine('ejs',engine);
 app.set('views','./views');
 app.set('view engine','ejs');
+
+
+bot.on('message', function(event) {
+  console.log(event); //把收到訊息的 event 印出來看看
+});
+
+const linebotParser = bot.parser();
+app.post('/webhook', linebotParser);
 
 var config = {
     host: 'ec2-54-235-163-246.compute-1.amazonaws.com',
@@ -147,7 +161,17 @@ app.get('/chartdata', function (req, res) {
                res.status(400).send(err);
            } 
 
-              client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
+              // client.query("SELECT value,datetime FROM history WHERE name = 'temp' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
+              //         //call `done()` to release the client back to the pool 
+                                           
+              //       if(err){
+              //         console.log(err);
+              //         res.status(400).send(err);
+              //       }
+              //     tempdata =  res.rows;
+                  
+              // });
+              client.query("SELECT value,datetime FROM history WHERE name = 'temp'   " ,function(err,res) {
                       //call `done()` to release the client back to the pool 
                                            
                     if(err){
@@ -158,7 +182,17 @@ app.get('/chartdata', function (req, res) {
                   
               });
 
-              client.query("SELECT value,datetime FROM history WHERE name = 'humidity' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
+              // client.query("SELECT value,datetime FROM history WHERE name = 'humidity' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
+              //         //call `done()` to release the client back to the pool
+              //       done(); 
+              //       if(err){
+              //         console.log(err);
+              //         res.status(400).send(err);
+              //       }
+              //     humdata =  res.rows;
+              //     // console.log("set chartdata");
+              // });
+              client.query("SELECT value,datetime FROM history WHERE name = 'humidity'   " ,function(err,res) {
                       //call `done()` to release the client back to the pool
                     done(); 
                     if(err){
@@ -168,6 +202,7 @@ app.get('/chartdata', function (req, res) {
                   humdata =  res.rows;
                   // console.log("set chartdata");
               });
+
 
 
 
@@ -198,11 +233,11 @@ app.get('/chartdata', function (req, res) {
 
             // for(var i = 0; i < result.rows.length; i++){
 
-              datachname.addchname = result.rows[0].name;
-              datachname.addchname = result.rows[1].name;
+              // datachname.addchname = result.rows[0].name;
+              // datachname.addchname = result.rows[1].name;
             // }
 
-            console.log(datachname);
+            // console.log(datachname);
             console.log("get connection  "+JSON.stringify(result.rows));
 
              res.render('index',{creatdata: creatdata,moment: moment});
