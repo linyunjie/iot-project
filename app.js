@@ -3,6 +3,9 @@ var app = express();
 var pg = require('pg');
 var moment = require('moment');
 var linebot = require('linebot');
+var net = require('net'); // 引入網路 (Net) 模組
+var HOST = '59.127.58.16';
+var PORT = 12345;
 
 
 var bot = linebot({
@@ -291,8 +294,35 @@ app.get('/chartdata', function (req, res) {
 
 
 app.get('/control', function(req, res){
-  
-  console.log(req.query.cmd);
+
+  var cmd = req.query.cmd;
+
+  if(cmd !== null){
+
+    var client = net.connect(PORT, HOST, function(){
+      console.log('客戶端連線…');
+
+      // 向伺服器端發送資料，該方法其實就是 socket.write() 方法，因為 client 參數就是一個通訊端的物件
+      client.write(cmd);
+      client.end();
+    });
+
+    // data 事件
+    client.on('data', function(data){
+      console.log(data.toString());
+
+      // 輸出由 client 端發來的資料位元組長度
+      console.log('socket.bytesRead is ' + client.bytesRead);
+
+      // 在列印輸出資料後，執行關閉用戶端的操作，其實就是 socket.end() 方法
+      client.end();
+    });
+
+    // end 事件
+    client.on('end', function(){
+      console.log('client disconnected');
+    });
+  }
   // res.render('about',{data: data.user});
 });
 
