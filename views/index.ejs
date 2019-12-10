@@ -104,6 +104,36 @@
 				  			
 						</table>
 					</div>
+
+					<div class="card" style="margin:15px 0px 10px 0px;">
+						<div class="card-header bg-info text-white">電器控制</div>
+						<table class="table table-hover" style="margin-bottom:0;">
+
+								<thead>
+									<tr>
+									  <th><h6>電器名稱</h6></th>
+									  <th><h6>操作</h6></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>電燈</td>
+										<td>
+											<button type="button" class="btn btn-primary" onClick=control("2,H");>開啟</button>
+											<button type="button" class="btn btn-danger" onClick=control("2,L");>關閉</button>
+										</td>
+									</tr>
+									<tr>
+										<td>風扇</td>
+										<td>
+											<button type="button" class="btn btn-primary" onClick=control("4,H");>開啟</button>
+											<button type="button" class="btn btn-danger" onClick=control("4,L");>關閉</button>
+										</td>
+									</tr>
+						        </tbody>
+				  			
+						</table>
+					</div>
 				
 		    </div>
 		</div><!-- row end-->
@@ -157,16 +187,24 @@
 	temp_chart();
 	requestTempChart();
 	hum_chart(); 
+	requestHumchart();
 	
-	setInterval(function(){
-		requestTempChart();
-	},60000);
-	setInterval(function(){
-		requestHumchart();
-	},60000);
+	// setInterval(function(){
+	// 	requestTempChart();
+	// },60000);
+	// setInterval(function(){
+	// 	requestHumchart();
+	// },60000);
 
  	// console.log("123");
 	});
+
+
+	//控制繼電器
+	function control(cmd){
+		$.get('/control',{cmd:cmd});
+		console.log(cmd);
+	}
 
 	
 </script>

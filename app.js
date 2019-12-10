@@ -290,9 +290,11 @@ app.get('/chartdata', function (req, res) {
 // });
 
 
-// app.get('/about', function(req, res){
-//   res.render('about',{data: data.user});
-// });
+app.get('/control', function(req, res){
+  
+  console.log(req.query.cmd);
+  // res.render('about',{data: data.user});
+});
 
 // check running enviroment
 var port = process.env.PORT || 3000;
