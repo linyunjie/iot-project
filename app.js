@@ -307,21 +307,23 @@ app.get('/control', function(req, res){
       client.end();
     });
 
-    // data 事件
-    client.on('data', function(data){
-      console.log(data.toString());
+    // // data 事件
+    // client.on('data', function(data){
+    //   console.log(data.toString());
 
-      // 輸出由 client 端發來的資料位元組長度
-      console.log('socket.bytesRead is ' + client.bytesRead);
+    //   // 輸出由 client 端發來的資料位元組長度
+    //   console.log('socket.bytesRead is ' + client.bytesRead);
 
-      // 在列印輸出資料後，執行關閉用戶端的操作，其實就是 socket.end() 方法
-      client.end();
-    });
+    //   // 在列印輸出資料後，執行關閉用戶端的操作，其實就是 socket.end() 方法
+    //   client.end();
+    // });
 
     // end 事件
     client.on('end', function(){
       console.log('client disconnected');
     });
+
+    res.send("Control" + cmd + "Ok");
   }
   // res.render('about',{data: data.user});
 });
