@@ -323,7 +323,7 @@ app.get('/control', function(req, res){
       console.log('client disconnected');
     });
 
-    res.send("Control" + cmd + "Ok");
+    res.send("Control GPIO " + cmd + "  Ok");
   }
   // res.render('about',{data: data.user});
 });
