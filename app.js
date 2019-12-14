@@ -1,8 +1,10 @@
+company = null;
 var express = require('express');
 var app = express();
 var pg = require('pg');
 var moment = require('moment');
 var linebot = require('linebot');
+const isset = require('isset');
 var net = require('net'); // 引入網路 (Net) 模組
 var HOST = '59.127.58.16';
 var PORT = 12345;
@@ -61,6 +63,8 @@ var creatdata ={};
 var data = {};
 var tempdata = {};
 var humdata = {};
+
+
 
 
 var pool = new pg.Pool(config);
@@ -296,33 +300,55 @@ app.get('/chartdata', function (req, res) {
 app.get('/control', function(req, res){
 
   var cmd = req.query.cmd;
+  
+  
 
-  if(cmd !== null){
+  if(cmd !== null&&isset(cmd)){
 
     var client = net.connect(PORT, HOST, function(){
       console.log('客戶端連線…');
-
       // 向伺服器端發送資料，該方法其實就是 socket.write() 方法，因為 client 參數就是一個通訊端的物件
-      client.write(cmd);
-      client.end();
+     
     });
 
-    // // data 事件
-    // client.on('data', function(data){
-    //   console.log(data.toString());
+    client.on('connect', function(data) {
+        console.log('client端：與 server端 連線成功，可以開始傳輸資料')
+    })
 
-    //   // 輸出由 client 端發來的資料位元組長度
-    //   console.log('socket.bytesRead is ' + client.bytesRead);
+    client.write(cmd, function () {
+      console.log('client端：開始傳輸資料，傳輸的資料為 ' + cmd)
+    })
 
-    //   // 在列印輸出資料後，執行關閉用戶端的操作，其實就是 socket.end() 方法
-    //   client.end();
-    // });
+     // // data 事件
+    client.on('data', function(data){
+      company = data.toString().trim();
+      console.log('client端：收到 server端 傳輸資料為 ' + company);
 
-    // end 事件
+      app.get('/test', function(req, res){
+
+
+
+
+
+      });
+
+      });
+      
+      // 輸出由 client 端發來的資料位元組長度
+      // console.log('socket.bytesRead is ' + client.bytesRead);
+
+      // 在列印輸出資料後，執行關閉用戶端的操作，其實就是 socket.end() 方法
+      // client.end();
+      // end 事件
+
+      // res.render('index',{status: status}); 
+    // console.log(company);
+
     client.on('end', function(){
       console.log('client disconnected');
     });
 
+    
     res.send("Control GPIO " + cmd + "  Ok");
   }
   // res.render('about',{data: data.user});

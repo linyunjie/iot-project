@@ -15,6 +15,7 @@
     "ejs-locals": "^1.0.2",
     "express": "^4.17.1",
     "highcharts": "^7.2.1",
+    "isset": "^1.0.4",
     "jquery": "^3.4.1",
     "linebot": "^1.5.3",
     "moment": "^2.24.0",
