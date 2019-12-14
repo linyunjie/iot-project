@@ -164,6 +164,8 @@
 	
 	$(function(){
 
+		
+
 		// temp_chart();
 
 		setInterval(function(){
@@ -188,6 +190,8 @@
 	requestTempChart();
 	hum_chart(); 
 	requestHumchart();
+
+	
 	
 	// setInterval(function(){
 	// 	requestTempChart();
@@ -196,13 +200,34 @@
 	// 	requestHumchart();
 	// },60000);
 
+	
+
  	// console.log("123");
 	});
+
+	function changeDom(){
+		$.ajax({
+	             url: "/test"
+
+	        })
+	        .done(function( data ) {
+	        	if(data.success){
+	        		
+	        			alert("控制成功！"); 
+	        		
+				}
+	        });
+	}
 
 
 	//控制繼電器
 	function control(cmd){
 		$.get('/control',{cmd:cmd});
+
+		setTimeout(function(){
+			changeDom();
+		},100);
+
 		
 		console.log(cmd);
 	}

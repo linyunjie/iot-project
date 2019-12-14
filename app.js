@@ -321,16 +321,16 @@ app.get('/control', function(req, res){
 
      // // data 事件
     client.on('data', function(data){
-      company = data.toString().trim();
-      console.log('client端：收到 server端 傳輸資料為 ' + company);
+      response = data.toString().trim();
+      console.log('client端：收到 server端 傳輸資料為 ' + response);
 
-      app.get('/test', function(req, res){
+        if(response){
 
+          app.get('/test', function(req, res){
+             res.send({success: true});
+          });
 
-
-
-
-      });
+        }
 
       });
       
