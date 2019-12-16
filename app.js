@@ -5,6 +5,7 @@ var pg = require('pg');
 var moment = require('moment');
 var linebot = require('linebot');
 const isset = require('isset');
+var empty = require('is-empty');
 var net = require('net'); // 引入網路 (Net) 模組
 var HOST = '59.127.58.16';
 var PORT = 12345;
@@ -303,7 +304,7 @@ app.get('/control', function(req, res){
   
   
 
-  if(cmd !== null&&isset(cmd)){
+  if(isset(cmd) && !empty(cmd)){
 
     var client = net.connect(PORT, HOST, function(){
       console.log('客戶端連線…');
