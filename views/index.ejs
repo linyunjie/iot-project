@@ -135,14 +135,14 @@
 										<td>電燈</td>
 										<td>
 											<button  id="result" type="button" class="btn btn-primary" onClick=control("2,H!");>開啟</button>
-											<button type="button" class="btn btn-danger" onClick=control("2,L!");>關閉</button>
+											<button  id="result1" type="button" class="btn btn-danger" onClick=control("2,L!");>關閉</button>
 										</td>
 									</tr>
 									<tr>
 										<td>風扇</td>
 										<td>
-											<button type="button" class="btn btn-primary" onClick=control("4,H!");>開啟</button>
-											<button type="button" class="btn btn-danger" onClick=control("4,L!");>關閉</button>
+											<button  id="result2" type="button" class="btn btn-primary" onClick=control("4,H!");>開啟</button>
+											<button  id="result3" type="button" class="btn btn-danger" onClick=control("4,L!");>關閉</button>
 										</td>
 									</tr>
 						        </tbody>
@@ -240,13 +240,20 @@
 		$.get('/control',{cmd:cmd});
 
 		$('#result').attr('disabled', true);
+		$('#result1').attr('disabled', true);
+		$('#result2').attr('disabled', true);
+		$('#result3').attr('disabled', true);
 
 
 		setTimeout(function(){
 			changeDom();
-			$('#result').attr('disabled', false);
+			$('#result').attr('disabled', true);
+			$('#result1').attr('disabled', true);
+			$('#result2').attr('disabled', true);
+			$('#result3').attr('disabled', true);
+			
 			// $("#result").addClass("aria-pressed='true'");
-		},1000);
+		},500);
 
 		
 		console.log(cmd);
