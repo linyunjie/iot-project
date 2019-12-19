@@ -6,9 +6,10 @@ var moment = require('moment');
 var linebot = require('linebot');
 const isset = require('isset');
 var empty = require('is-empty');
+var check = require('check-types');
 var net = require('net'); // 引入網路 (Net) 模組
 var HOST = '59.127.58.16';
-var PORT = 12345;
+var PORT = 10090;
 
 
 var bot = linebot({
@@ -20,7 +21,6 @@ var bot = linebot({
 
 // prepare server
 app.use('/css', express.static(__dirname + '/htmlcss'));
-
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
@@ -64,6 +64,7 @@ var creatdata ={};
 var data = {};
 var tempdata = {};
 var humdata = {};
+var testdata =[];
 
 
 
@@ -105,7 +106,7 @@ app.get('/update', function(req, res){
             client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
                 //call `done()` to release the client back to the pool
                  
-                 done(); 
+                 // done(); 
                  if(err){
                      console.log(err);
                      res.status(400).send(err);
@@ -115,25 +116,25 @@ app.get('/update', function(req, res){
 
             });
 
-            // client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
-            //     //call `done()` to release the client back to the pool
+            client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
+                //call `done()` to release the client back to the pool
                  
-            //      // done(); 
-            //      if(err){
-            //          console.log(err);
-            //          res.status(400).send(err);
-            //      }
-            // });
+                 // done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+            });
 
-            //  client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
-            //     //call `done()` to release the client back to the pool
+             client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
+                //call `done()` to release the client back to the pool
                  
-            //      done(); 
-            //      if(err){
-            //          console.log(err);
-            //          res.status(400).send(err);
-            //      }
-            // });
+                 done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+            });
 
 
             
@@ -188,7 +189,7 @@ app.get('/chartdata', function (req, res) {
               //     tempdata =  res.rows;
                   
               // });
-              client.query("SELECT value,datetime FROM history WHERE name = 'temp'   " ,function(err,res) {
+              client.query("SELECT value,datetime FROM history WHERE name = 'temp'    " ,function(err,res) {
                       //call `done()` to release the client back to the pool 
                                            
                     if(err){
@@ -196,6 +197,8 @@ app.get('/chartdata', function (req, res) {
                       res.status(400).send(err);
                     }
                   tempdata =  res.rows;
+
+                  // console.log(tempdata);
                   
               });
 
@@ -221,10 +224,19 @@ app.get('/chartdata', function (req, res) {
               });
 
 
+              // client.query("SELECT name,value,datetime FROM history WHERE name in ('temp','humidity') GROUP BY name,datetime " ,function(err,res) {
+              //         //call `done()` to release the client back to the pool 
+                                           
+              //       if(err){
+              //         console.log(err);
+              //         res.status(400).send(err);
+              //       }
+                  
+              //       testdata = res.rows;
+  
+              // });
 
-
-              
-            res.json({tempdata: tempdata ,moment: moment, humdata: humdata});
+            res.json({tempdata: tempdata ,moment: moment,humdata: humdata,testdata: testdata});
          });
 });
 

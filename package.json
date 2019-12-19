@@ -4,17 +4,18 @@
   "description": "智慧家庭監控",
   "main": "HelloWorld.js",
   "dependencies": {
+    "bootstrap": "^4.3.1",
+    "check-types": "^11.0.0",
     "ejs-locals": "^1.0.2",
     "express": "^4.17.1",
     "highcharts": "^7.2.1",
-    "isset": "^1.0.4",
     "is-empty": "^1.2.0",
-    "linebot": "^1.5.3",
+    "isset": "^1.0.4",
     "jquery": "^3.4.1",
-    "pg": "^7.12.1",
+    "linebot": "^1.5.3",
     "moment": "^2.24.0",
-    "popper.js": "^1.16.0",
-    "bootstrap": "^4.3.1"
+    "pg": "^7.12.1",
+    "popper.js": "^1.16.0"
   },
   "devDependencies": {},
   "scripts": {
