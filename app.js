@@ -105,7 +105,7 @@ app.get('/update', function(req, res){
             client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
                 //call `done()` to release the client back to the pool
                  
-                 done(); 
+//                  done(); 
                  if(err){
                      console.log(err);
                      res.status(400).send(err);
@@ -115,25 +115,25 @@ app.get('/update', function(req, res){
 
             });
 
-            // client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
-            //     //call `done()` to release the client back to the pool
+            client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
+                //call `done()` to release the client back to the pool
                  
-            //      // done(); 
-            //      if(err){
-            //          console.log(err);
-            //          res.status(400).send(err);
-            //      }
-            // });
+                 // done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+            });
 
-            //  client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
-            //     //call `done()` to release the client back to the pool
+             client.query("INSERT INTO history(name,value)VALUES('humidity', $1)", [hum], function(err,result) {
+                //call `done()` to release the client back to the pool
                  
-            //      done(); 
-            //      if(err){
-            //          console.log(err);
-            //          res.status(400).send(err);
-            //      }
-            // });
+                 done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+            });
 
 
             
