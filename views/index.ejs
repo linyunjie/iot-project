@@ -142,8 +142,13 @@
 									<tr>
 										<td>風扇</td>
 										<td>
+<<<<<<< HEAD
 											<button id="result2" type="button" class="btn btn-primary" onClick=control("4,H!");>開啟</button>
 											<button id="result3" type="button" class="btn btn-danger" onClick=control("4,L!");>關閉</button>
+=======
+											<button  id="result2" type="button" class="btn btn-primary" onClick=control("4,H!");>開啟</button>
+											<button  id="result3" type="button" class="btn btn-danger" onClick=control("4,L!");>關閉</button>
+>>>>>>> 872e04859658ca661ca20b0a63db3822f2d58d14
 										</td>
 									</tr>
 						        </tbody>
@@ -224,12 +229,15 @@
 	// requestTHchart();
 	
 	
-	// setInterval(function(){
-	// 	requestTempChart();
-	// },60000);
-	// setInterval(function(){
-	// 	requestHumchart();
-	// },60000);
+	setInterval(function(){
+		requestTempChart();
+	},60000);
+	setInterval(function(){
+		requestHumchart();
+	},60000);
+	setInterval(function(){
+		requestTHchart();
+	},60000);
 
 	
 
@@ -267,6 +275,7 @@
 			$('#result1').attr('disabled', false);
 			$('#result2').attr('disabled', false);
 			$('#result3').attr('disabled', false);
+
 			// $("#result").addClass("aria-pressed='true'");
 		},1000);
 
