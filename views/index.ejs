@@ -209,7 +209,7 @@
 	            // console.log(data.data);
 	           
 	          });
-		},5000);
+		},60000);
 
 	
 	temp_chart();
@@ -228,13 +228,13 @@
 	
 	setInterval(function(){
 		requestTempChart();
-	},60000);
+	},600000);
 	setInterval(function(){
 		requestHumchart();
-	},60000);
+	},600000);
 	setInterval(function(){
 		requestTHchart();
-	},60000);
+	},600000);
 
 	
 
@@ -434,7 +434,7 @@
 		            // console.log(newVal);
 	        	}
 	        });
-	}, 1000);
+	}, 600000);
 
 
 	function appendPoint(chart,date,temp,) {
