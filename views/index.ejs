@@ -453,10 +453,10 @@
 		        type: 'spline',
 		        animation: Highcharts.svg, // don't animate in old IE
 		        renderTo: 'container1', //顯示在哪一區域
-		        marginRight: 10
-		        // events: {
-		        //     load: requestTempChart
-		        // }
+		        marginRight: 10,
+		        events: {
+		            load: requestTempChart
+		        }
 		    },
 
 			plotOptions: {
