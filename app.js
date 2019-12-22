@@ -189,7 +189,7 @@ app.get('/chartdata', function (req, res) {
               //     tempdata =  res.rows;
                   
               // });
-              client.query("SELECT value,datetime FROM history WHERE name = 'temp' ORDER BY datetime desc limit 10  " ,function(err,res) {
+              client.query("SELECT value,datetime FROM history WHERE name = 'temp'  and datetime between  now() - interval '2 hour' and now()  ORDER BY datetime   " ,function(err,res) {
                       //call `done()` to release the client back to the pool 
                                            
                     if(err){
@@ -212,7 +212,7 @@ app.get('/chartdata', function (req, res) {
               //     humdata =  res.rows;
               //     // console.log("set chartdata");
               // });
-              client.query("SELECT value,datetime FROM history WHERE name = 'humidity'  ORDER BY datetime desc limit 10  " ,function(err,res) {
+              client.query("SELECT value,datetime FROM history WHERE name = 'humidity'  and datetime between  now() - interval '2 hour' and now()  ORDER BY datetime    " ,function(err,res) {
                       //call `done()` to release the client back to the pool
                     done(); 
                     if(err){

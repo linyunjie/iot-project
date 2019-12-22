@@ -895,7 +895,7 @@ function requestTHchart() {
 						time=datetime[1].split(':');
 						date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
 
-			          	appendPoint2(thchart,date,data.humdata[i].value); //第2個y軸線 匯入資料
+			          	appendPoint(thchart,date,data.humdata[i].value); //第2個y軸線 匯入資料
 			          	
 					}
 
@@ -908,7 +908,7 @@ function requestTHchart() {
 						time=datetime[1].split(':');
 						date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
 
-			          	appendPoint(thchart,date,data.tempdata[i].value); //第1個y軸線 匯入資料
+			          	appendPoint2(thchart,date,data.tempdata[i].value); //第1個y軸線 匯入資料
 			          	
 					}
 		            thchart.redraw();
