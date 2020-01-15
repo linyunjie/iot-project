@@ -10,6 +10,9 @@ var check = require('check-types');
 var net = require('net'); // 引入網路 (Net) 模組
 var HOST = '59.127.58.16';
 var PORT = 10090;
+require('dotenv').config();
+
+console.log(process.env.CHRIS); //chris
 
 
 var bot = linebot({

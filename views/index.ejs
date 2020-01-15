@@ -135,7 +135,7 @@
 									<tr>
 										<td>電燈</td>
 										<td>
-											<button  id="result" type="button" class="btn btn-primary" onClick=control("2,H!");>開啟</button>
+											<button  id="result" type="button" class="btn btn-primary" onClick=control("2,H!","1");>開啟</button>
 											<button  id="result1" type="button" class="btn btn-danger" onClick=control("2,L!");>關閉</button>
 										</td>
 									</tr>
@@ -257,7 +257,7 @@
 
 
 	//控制繼電器
-	function control(cmd){
+	function control(cmd,status){
 		$.get('/control',{cmd:cmd});
 
 		$('#result').attr('disabled', true);
@@ -276,7 +276,7 @@
 			// $("#result").addClass("aria-pressed='true'");
 		},1000);
 
-		
+		console.log(status);
 		console.log(cmd);
 	}
 
