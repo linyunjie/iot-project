@@ -60,9 +60,7 @@ var config = {
     port: 5432,
     ssl: true
 };
-var datachname ={
-  chname:[],
-};
+
 var creatdata ={};
 var data = {};
 var tempdata = {};
@@ -94,7 +92,7 @@ app.get('/update', function(req, res){
            } 
 
             
-            client.query("UPDATE sensor SET value = $1 WHERE name = 'Temperature'", [temp], function(err,result) {
+            client.query("UPDATE sensor SET value = $1 WHERE name = '溫度'", [temp], function(err,result) {
                 //call `done()` to release the client back to the pool
                  
                  // done(); 
@@ -107,7 +105,7 @@ app.get('/update', function(req, res){
 
             });
 
-            client.query("UPDATE sensor SET value = $1 WHERE name = 'Humidity'", [hum], function(err,result) {
+            client.query("UPDATE sensor SET value = $1 WHERE name = '濕度'", [hum], function(err,result) {
                 //call `done()` to release the client back to the pool
 //                  done(); 
 
@@ -120,7 +118,7 @@ app.get('/update', function(req, res){
 
             });
 
-            client.query("UPDATE sensor SET value = $1 WHERE name = 'Watertemp'", [watertemp], function(err,result) {
+            client.query("UPDATE sensor SET value = $1 WHERE name = '水溫'", [watertemp], function(err,result) {
                 //call `done()` to release the client back to the pool
 //                  done(); 
 
@@ -277,6 +275,7 @@ app.get('/chartdata', function (req, res) {
             
             creatdata = result.rows;
 
+            
             // for(var i = 0; i < result.rows.length; i++){
 
               // datachname.addchname = result.rows[0].name;
