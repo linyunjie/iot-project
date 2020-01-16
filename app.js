@@ -82,6 +82,7 @@ app.get('/update', function(req, res){
 
   var temp = req.query.temp;
   var hum = req.query.hum;
+  var watertemp = req.query.wtemp;
   // var sql = {
   //   temp:req.query.temp
   // };
@@ -116,6 +117,19 @@ app.get('/update', function(req, res){
                  }
 
              console.log("hum="+hum);
+
+            });
+
+            client.query("UPDATE sensor SET value = $1 WHERE name = 'Watertemp'", [watertemp], function(err,result) {
+                //call `done()` to release the client back to the pool
+//                  done(); 
+
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
+
+             console.log("Watertemp="+watertemp);
 
             });
 
