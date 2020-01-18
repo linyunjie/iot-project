@@ -61,11 +61,14 @@ var config = {
     ssl: true
 };
 
-var creatdata ={};
-var data = {};
-var tempdata = {};
-var humdata = {};
-var testdata =[];
+var creatdata ={}; //初始化表格資料
+var data = {};  //更新表格資料
+var tempdata = {}; //更新溫度圖表資料
+var humdata = {}; //更新濕度圖表資料
+var wtempdata = {}; //更新水溫圖表資料
+
+
+var testdata =[]; //測試
 
 
 
@@ -129,6 +132,17 @@ app.get('/update', function(req, res){
 
              console.log("Watertemp="+watertemp);
 
+            });
+
+
+            client.query("INSERT INTO history(name,value)VALUES('watertemp', $1)", [watertemp], function(err,result) {
+                //call `done()` to release the client back to the pool
+                 
+                 // done(); 
+                 if(err){
+                     console.log(err);
+                     res.status(400).send(err);
+                 }
             });
 
             client.query("INSERT INTO history(name,value)VALUES('temp', $1)", [temp], function(err,result) {
@@ -217,6 +231,19 @@ app.get('/chartdata', function (req, res) {
                   
               });
 
+              client.query("SELECT value,datetime FROM history WHERE name = 'watertemp'  and datetime between  now() - interval '2 hour' and now()  ORDER BY datetime   " ,function(err,res) {
+                      //call `done()` to release the client back to the pool 
+                                           
+                    if(err){
+                      console.log(err);
+                      res.status(400).send(err);
+                    }
+                  wtempdata =  res.rows;
+
+                  // console.log(tempdata);
+                  
+              });
+
               // client.query("SELECT value,datetime FROM history WHERE name = 'humidity' and datetime between now() - interval '1 min' and now()   " ,function(err,res) {
               //         //call `done()` to release the client back to the pool
               //       done(); 
@@ -251,7 +278,7 @@ app.get('/chartdata', function (req, res) {
   
               // });
 
-            res.json({tempdata: tempdata ,moment: moment,humdata: humdata,testdata: testdata});
+            res.json({tempdata: tempdata,moment: moment,humdata: humdata,wtempdata: wtempdata});
          });
 });
 

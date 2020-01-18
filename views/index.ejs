@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/css/gauge.css">
   <link rel="stylesheet" href="/css/highchart.css">
   <link rel="stylesheet" href="/css/highchart2.css">
+  <link rel="stylesheet" href="/css/highchart3.css">
   <link rel="stylesheet" href="/css/highchartth.css">
 	
  
@@ -74,6 +75,7 @@
 					    <figure class="highcharts-figure ">
 						    <div id="container-speed" class="chart-container "></div>
 						    <div id="container-rpm" class="chart-container "></div> 
+						    <div id="container-water" class="chart-container "></div> 
 						</figure>
 					</div>
 		    </div>
@@ -81,8 +83,9 @@
 					<!-- <figure class="highcharts-figure"> -->
 						<div class="card">
 							<div class="card-header bg-info text-white">圖表數據</div>
-							<div id="container1" style="margin-top:10px;"></div>
-							<div id="container2" style="margin-top:10px;"></div>
+							<div id="container1" style="margin-top:30px;"></div>
+							<div id="container2" style="margin-top:30px;"></div>
+							<div id="container3" style="margin-top:30px;"></div>
 					    </div>
 					<!-- </figure> -->
 		    </div>
@@ -214,10 +217,12 @@
 	
 	temp_chart();
 	hum_chart(); 
+	Wtemp_chart();
 	th_chart();
 
 	requestTempChart();
 	requestHumchart();
+	requestWtempChart();
  	requestTHchart();
 
  	
@@ -231,6 +236,9 @@
 	},600000);
 	setInterval(function(){
 		requestHumchart();
+	},600000);
+	setInterval(function(){
+		requestWtempChart();
 	},600000);
 	setInterval(function(){
 		requestTHchart();
@@ -409,12 +417,44 @@
 
 	}));
 
+	// The speed gauge
+	var chartwater = Highcharts.chart('container-water', Highcharts.merge(gaugeOptions, {
+	    yAxis: {
+	        min: 0,
+	        max: 60,
+	        title: {
+	            text: '水溫'
+	        }
+	    },
+
+	    credits: {
+	        enabled: false
+	    },
+
+	    series: [{
+	        name: '水溫',
+	        data: [0],
+	        dataLabels: {
+	            format:
+	                '<div style="text-align:center">' +
+	                '<span style="font-size:25px">{y}</span><br/>' +
+	                '<span style="font-size:12px;opacity:0.4">℃</span>' +
+	                '</div>'
+	        },
+	        tooltip: {
+	            valueSuffix: ' ℃'
+	        }
+	    }]
+
+	}));
+
 	// Bring life to the dials
 	setInterval(function () {
 	    // Speed
 	    var point,
 	        tempVal,
-	        humVal;
+	        humVal,
+	        wtempVal;
 
 			$.ajax({
 	             url: "/sensor"
@@ -431,6 +471,12 @@
 					point = chartRpm.series[0].points[0];
 					humVal = data.data[1].value;
 					point.update(humVal);
+		            // console.log(newVal);
+	        	}
+	        	if (chartwater) {
+					point = chartwater.series[0].points[0];
+					wtempVal = data.data[2].value;
+					point.update(wtempVal);
 		            // console.log(newVal);
 	        	}
 	        });
@@ -719,6 +765,133 @@
 		             
 		          });
 		          
+	}
+
+
+	function Wtemp_chart(){
+	 	var options = {
+		// Highcharts.chart('container2', {
+		    chart: {
+		        type: 'spline',
+		        animation: Highcharts.svg, // don't animate in old IE
+		        renderTo: 'container3', //顯示在哪一區域
+		        marginRight: 10,
+		        events: {
+		            load: requestWtempChart
+		        }
+		    },
+
+			plotOptions: {
+		        series: {
+		            marker: {
+		                enabled: false
+		            }
+		        }
+		    },
+
+
+		    time: {
+		        useUTC: true
+		    },
+
+		    title: {
+		        text: '水 溫 溫 度'
+		    },
+
+		    // accessibility: {
+		    //     announceNewData: {
+		    //         enabled: true,
+		    //         minAnnounceInterval: 15000,
+		    //         announcementFormatter: function (allSeries, newSeries, newPoint) {
+		    //             if (newPoint) {
+		    //                 return 'New point added. Value: ' + newPoint.y;
+		    //             }
+		    //             return false;
+		    //         }
+		    //     }
+		    // },
+
+		    xAxis: {
+
+		    	title:{
+						text:"時間"
+					},
+
+		        type: 'datetime',
+		        // tickPixelInterval: 150
+
+		        labels: {
+						formatter: function() {
+							return Highcharts.dateFormat('%H:%M:%S', this.value);
+						}
+				}
+
+		    },
+
+		    yAxis: {
+		        title: {
+		            text: '溫度(℃)',
+		            align: 'high',
+		            offset: 10,
+		            rotation: 0,
+		            y: -20
+		        },
+		        // plotLines: [{
+		        //     value: 0,
+		        //     width: 1,
+		        //     color: '#808080'
+		        // }]
+		    },
+
+		    // tooltip: {
+		    //     headerFormat: '<b>{series.name}</b><br/>',
+		    //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+		    // },
+
+		    legend: {
+		        enabled: false
+		    },
+
+		    exporting: {
+		        enabled: false
+		    },
+
+		    credits : {
+	            enabled:false
+	        },
+
+		    series: [{
+		        name: 'Watertemperature'
+		    }]
+		};
+
+		wtempchart = new Highcharts.Chart(options);
+	// tempchart.redraw();
+	// });
+	}
+
+
+	function requestWtempChart() {
+		$.ajax({
+		        url: "/chartdata"
+		          })
+		          .done(function( data ) {
+					for(var i in data.wtempdata){
+
+						datetime = moment.utc(data.wtempdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
+
+						datetime = datetime.split(' ');
+						date=datetime[0].split('-');
+						time=datetime[1].split(':');
+						date=Date.UTC(date[0],date[1]-1,date[2],time[0],time[1],time[2]);	
+
+			          	appendPoint(wtempchart,date,data.wtempdata[i].value);
+			          	// console.log(date);
+					}
+		            wtempchart.redraw();
+		             
+		          });
+		         
 	}
 
 
