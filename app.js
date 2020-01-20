@@ -72,7 +72,6 @@ var testdata =[]; //測試
 
 
 
-
 var pool = new pg.Pool(config);
 
 app.use(express.static(__dirname + '/public'));
@@ -301,6 +300,7 @@ app.get('/chartdata', function (req, res) {
                  }
             
             creatdata = result.rows;
+            
 
             
             // for(var i = 0; i < result.rows.length; i++){
@@ -312,7 +312,7 @@ app.get('/chartdata', function (req, res) {
             // console.log(datachname);
             console.log("get connection  "+JSON.stringify(result.rows));
 
-             res.render('index',{creatdata: creatdata,moment: moment});
+             res.render('index',{creatdata: creatdata,moment: moment ,title: '智慧監控魚缸',success:'null'});
             });
     }); 
 });
@@ -367,8 +367,10 @@ app.get('/control', function(req, res){
      
     });
 
+    
+
     client.on('connect', function(data) {
-        console.log('client端：與 server端 連線成功，可以開始傳輸資料')
+      console.log('client端：與 server端 連線成功，可以開始傳輸資料')
     })
 
     client.write(cmd, function () {
@@ -380,13 +382,6 @@ app.get('/control', function(req, res){
       response = data.toString().trim();
       console.log('client端：收到 server端 傳輸資料為 ' + response);
 
-        if(response){
-
-          app.get('/test', function(req, res){
-             res.send({success: true});
-          });
-
-        }
 
       });
       
@@ -399,6 +394,10 @@ app.get('/control', function(req, res){
 
       // res.render('index',{status: status}); 
     // console.log(company);
+    client.on('error', function(err){
+      console.log("Error: "+err.message);
+
+    })
 
     client.on('end', function(){
       console.log('client disconnected');

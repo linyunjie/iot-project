@@ -44,7 +44,7 @@
 	<div class="container">
 		
 			<nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
-		    <a class="navbar-brand" >智慧監控魚缸</a>
+		    <a class="navbar-brand" ><%= title %></a>
 		    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
 		      <span class="navbar-toggler-icon"></span>
 		    </button> -->
@@ -95,13 +95,14 @@
 						<table class="table table-hover" style="margin-bottom:0;">
 
 								<thead>
+									<%= success %>"
 									<tr>
 									  <th><h6>感測器</h6></th>
 									  <th><h6>數值</h6></th>
 									  <th><h6>更新時間</h6></th>
 									  <!-- <th><h6>test</h6></th> -->
 									</tr>
-									<tbody>
+									<tbody>									 
 										<% for ( var i = 0 ; i < creatdata.length ; i++){ %>
 							            <tr class= "<%= creatdata[i].name  %>" >
 							                <td >
@@ -189,7 +190,10 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
 
+
 <script>
+
+
 	
 	$(function(){
 
@@ -249,23 +253,24 @@
  	// console.log("123");
 	});
 
-	function changeDom(){
-		$.ajax({
-	             url: "/test"
+	// function changeDom(){
+	// 	$.ajax({
+	// 			cache: false,
+	//             url: "/success"
+	//         })
+	//         .done(function( data ) {
+	        	
 
-	        })
-	        .done(function( data ) {
-	        	if(data.success){
-	        		
-	        		alert("控制成功！"); 
-	        		
-				}
-	        });
-	}
-
+	// 				alert(data);	
+					
+	//         });
+	// }
+	
 
 	//控制繼電器
 	function control(cmd,status){
+
+
 		$.get('/control',{cmd:cmd});
 
 		$('#result').attr('disabled', true);
@@ -275,7 +280,15 @@
 
 
 		setTimeout(function(){
-			changeDom();
+
+			// changeDom();
+
+ 			// if(success){
+ 			// 	alert("控制成功！");	
+ 			// }else{
+ 			// 	alert("控制失敗！");	
+ 			// }
+
 			$('#result').attr('disabled', false);
 			$('#result1').attr('disabled', false);
 			$('#result2').attr('disabled', false);
