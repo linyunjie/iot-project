@@ -356,7 +356,7 @@ app.get('/chartdata', function (req, res) {
 app.get('/control', function(req, res){
 
   var cmd = req.query.cmd;
-  
+  var status;
   
 
   if(isset(cmd) && !empty(cmd)){
@@ -382,6 +382,16 @@ app.get('/control', function(req, res){
       response = data.toString().trim();
       console.log('client端：收到 server端 傳輸資料為 ' + response);
 
+        if(response){
+
+          // app.get('/success', function(req, res, next){
+          //   // res.send('success');
+
+          //   next();
+
+          // });
+
+        }
 
       });
       
@@ -392,10 +402,13 @@ app.get('/control', function(req, res){
       // client.end();
       // end 事件
 
-      // res.render('index',{status: status}); 
     // console.log(company);
     client.on('error', function(err){
       console.log("Error: "+err.message);
+
+        // app.get('/success', function(req, res){
+        //   res.send('fail');
+        // });
 
     })
 
