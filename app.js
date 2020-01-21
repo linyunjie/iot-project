@@ -1,15 +1,67 @@
 company = null;
 var express = require('express');
 var app = express();
+
 var pg = require('pg');
 var moment = require('moment');
+
+var http = require('http');
+
 var linebot = require('linebot');
 const isset = require('isset');
+
 var empty = require('is-empty');
 var check = require('check-types');
+
 var net = require('net'); // 引入網路 (Net) 模組
+
+
 var HOST = '59.127.58.16';
 var PORT = 10090;
+
+var server = http.createServer(app);
+var io = require('socket.io')(server); // 加入 Socket.IO
+
+// check running enviroment
+var port = process.env.PORT || 3000;
+
+
+
+// io.listen(server); // 開啟 Socket.IO 的 listener
+
+// io.on('connection', function (socket) {
+//   console.log('a user connected');
+//   socket.emit('message', {'message': 'hello world'});
+  // socket.on('my other event', function (data) {
+  //   console.log(data);
+  // });
+// });
+
+// io.on('connection', function(socket){
+//   console.log('a user connected');
+//   socket.emit('message', {'message': controlstatus});
+//   socket.on('disconnect', function(){
+//     console.log('user disconnected');
+//   });
+//   socket.disconnected;
+//   controlstatus="";
+// });
+
+
+
+// server.listen(port);
+
+// if(port === 3000){
+//   console.log('RUN http://localhost:3000/')
+// }
+
+
+
+server.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
+
 require('dotenv').config();
 
 console.log(process.env.CHRIS); //chris
@@ -23,6 +75,7 @@ var bot = linebot({
 
 
 // prepare server
+app.use(express.static(__dirname + '/'));
 app.use('/css', express.static(__dirname + '/htmlcss'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
@@ -70,7 +123,7 @@ var wtempdata = {}; //更新水溫圖表資料
 
 var testdata =[]; //測試
 
-
+controlstatus="初始化";
 
 var pool = new pg.Pool(config);
 
@@ -356,21 +409,24 @@ app.get('/chartdata', function (req, res) {
 app.get('/control', function(req, res){
 
   var cmd = req.query.cmd;
-  var status;
-  
+   
+
 
   if(isset(cmd) && !empty(cmd)){
 
     var client = net.connect(PORT, HOST, function(){
       console.log('客戶端連線…');
       // 向伺服器端發送資料，該方法其實就是 socket.write() 方法，因為 client 參數就是一個通訊端的物件
-     
     });
 
     
-
     client.on('connect', function(data) {
       console.log('client端：與 server端 連線成功，可以開始傳輸資料')
+
+      controlstatus = "控制成功"
+      // app.get('/success', function(req, res){
+      //     res.send({success: controlstatus});
+      //   });
     })
 
     client.write(cmd, function () {
@@ -381,19 +437,9 @@ app.get('/control', function(req, res){
     client.on('data', function(data){
       response = data.toString().trim();
       console.log('client端：收到 server端 傳輸資料為 ' + response);
-
-        if(response){
-
-          // app.get('/success', function(req, res, next){
-          //   // res.send('success');
-
-          //   next();
-
-          // });
-
-        }
-
       });
+
+   
       
       // 輸出由 client 端發來的資料位元組長度
       // console.log('socket.bytesRead is ' + client.bytesRead);
@@ -406,27 +452,29 @@ app.get('/control', function(req, res){
     client.on('error', function(err){
       console.log("Error: "+err.message);
 
-        // app.get('/success', function(req, res){
-        //   res.send('fail');
-        // });
-
+       controlstatus = "控制失敗"
+       // app.get('/success', function(req, res){
+       //    res.send({success: controlstatus});
+       //  });
     })
 
     client.on('end', function(){
       console.log('client disconnected');
+        
     });
+
+    
 
     
     res.send("Control GPIO " + cmd + "  Ok");
   }
+
+  app.get('/success', function(req, res){
+    res.send({success: controlstatus});
+  });
+
+  
   // res.render('about',{data: data.user});
 });
 
-// check running enviroment
-var port = process.env.PORT || 3000;
 
-app.listen(port);
-
-if(port === 3000){
-  console.log('RUN http://localhost:3000/')
-}

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/socket.io/socket.io.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -22,7 +23,7 @@
 	#snoAlertBox{
     position:absolute;
     z-index:1400;
-   top:2%;
+    top:2%;
     right:4%;
     margin:0px auto;
 	text-align:center;
@@ -33,6 +34,13 @@
 
 
 <body>
+
+	<!-- <script>
+      var socket = io();
+	   
+    </script> -->
+
+
   <!-- <h1>Hello world i am h1 tag<h1>
   <a href="./about">goto about</a> -->
 <div class="container">
@@ -253,25 +261,33 @@
  	// console.log("123");
 	});
 
-	// function changeDom(){
-	// 	$.ajax({
-	// 			// cache: false,
-	//             url: "/success"
-	//         })
-	//         .done(function( data ) {
+	function changeDom(){
+		$.ajax({
+				// cache: false,
+	            url: "/success"
+	        })
+	        .done(function(data ) {
 	        	
+					alert(data.success);	
 
-	// 				alert(data);	
-					
-	//         });
-	// }
+	        });
+	}
 	
 
 	//控制繼電器
 	function control(cmd,status){
 
+		// var socket = io();
 
 		$.get('/control',{cmd:cmd});
+
+
+		//  socket.on('message', function(data){
+		// 	console.log(data.message);
+		// 	// if(data.message){
+		// 		alert(data.message);	
+		// 	// }
+		// });
 
 		$('#result').attr('disabled', true);
 		$('#result1').attr('disabled', true);
@@ -281,13 +297,7 @@
 
 		setTimeout(function(){
 
-			// changeDom();
-
- 			// if(success){
- 			// 	alert("控制成功！");	
- 			// }else{
- 			// 	alert("控制失敗！");	
- 			// }
+			changeDom();
 
 			$('#result').attr('disabled', false);
 			$('#result1').attr('disabled', false);
@@ -296,6 +306,9 @@
 
 			// $("#result").addClass("aria-pressed='true'");
 		},1000);
+
+		
+	   
 
 		console.log(status);
 		console.log(cmd);
