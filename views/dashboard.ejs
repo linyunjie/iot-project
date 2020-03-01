@@ -1,1062 +1,1104 @@
 <style>
-    #snoAlertBox {
-        position: absolute;
-        z-index: 1400;
-        top: 2%;
-        right: 4%;
-        margin: 0px auto;
-        text-align: center;
-        display: none;
-    }
+  #snoAlertBox {
+    position: absolute;
+    z-index: 1400;
+    top: 2%;
+    right: 4%;
+    margin: 0px auto;
+    text-align: center;
+    display: none;
+  }
 </style>
 
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
-        <a class="navbar-brand"><%= title %></a>
-        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark bg-info text-white">
+  <a class="navbar-brand"><%= title %></a>
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button> -->
-        <div class=" navbar-collapse" id="navbarColor02">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/users/logout">登出 <span class="sr-only">(current)</span></a>
-                </li>
-                <!-- <li class="nav-item">
+  <div class=" navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/users/logout"
+          >登出 <span class="sr-only">(current)</span></a
+        >
+      </li>
+      <!-- <li class="nav-item">
                   <a class="nav-link" href="#">區域2</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">區域3</a>
                 </li> -->
-
-            </ul>
-            <!-- <form class="form-inline">
+    </ul>
+    <!-- <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
                 <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
               </form> -->
+  </div>
+</nav>
+<div class="masthead">
+  <div class="container">
+    <div class="row" style="margin:0px 0px 0px 0px; ">
+      <div class="col-sm" style="margin:0px 0px 0px 0px; ">
+        <div class="card">
+          <div class="card-header bg-info text-white">動態數據</div>
+          <figure class="highcharts-figure ">
+            <div id="container-speed" class="chart-container "></div>
+            <div id="container-rpm" class="chart-container "></div>
+            <div id="container-water" class="chart-container "></div>
+          </figure>
         </div>
-    </nav>
-
-    <div class="row" style="margin:10px 0px 10px 0px; ">
-        <div class="col-sm" style="margin:10px 0px 10px 0px; ">
-            <div class="card">
-                <div class="card-header bg-info text-white">動態數據</div>
-                <figure class="highcharts-figure ">
-                    <div id="container-speed" class="chart-container "></div>
-                    <div id="container-rpm" class="chart-container "></div>
-                    <div id="container-water" class="chart-container "></div>
-                </figure>
-            </div>
-        </div>
-        <div class="col-sm" style="margin:10px 0px 10px 0px;">
-            <!-- <figure class="highcharts-figure"> -->
-            <div class="card">
-                <div class="card-header bg-info text-white">圖表數據</div>
-                <div id="container1" style="margin-top:30px;"></div>
-                <div id="container2" style="margin-top:30px;"></div>
-                <div id="container3" style="margin-top:30px;"></div>
-            </div>
-            <!-- </figure> -->
-        </div>
-        <div class="col-sm" style="margin:10px 0px 10px 0px; ">
-            <div class="card">
-                <div class="card-header bg-info text-white">感測數據</div>
-                <table class="table table-hover" style="margin-bottom:0;">
-
-                    <thead>
-
-                        <tr>
-                            <th>
-                                <h6>感測器</h6>
-                            </th>
-                            <th>
-                                <h6>數值</h6>
-                            </th>
-                            <th>
-                                <h6>更新時間</h6>
-                            </th>
-                            <!-- <th><h6>test</h6></th> -->
-                        </tr>
-                    <tbody>
-                        <% for ( var i = 0 ; i < creatdata.length ; i++){ %>
-                        <tr class="<%= creatdata[i].name  %>">
-                            <td>
-                                <%= creatdata[i].name  %>
-                            </td>
-                            <td class="value">
-                                <%= creatdata[i].value  %>
-                            </td>
-                            <td class="time">
-                                <%= moment(creatdata[i].datetime).format('YYYY-MM-DD HH:mm:ss')  %>
-                            </td>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                    </thead>
-
-                </table>
-            </div>
-
-            <div class="card" style="margin:15px 0px 10px 0px;">
-                <div class="card-header bg-info text-white">電器控制</div>
-                <table class="table table-hover" style="margin-bottom:0;">
-
-
-
-
-                    <thead>
-                        <tr>
-                            <th>
-                                <h6>電器名稱</h6>
-                            </th>
-                            <th>
-                                <h6>操作</h6>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>電扇</td>
-                            <td>
-                                <button id="result" type="button" class="btn btn-primary"
-                                    onClick=control("27,H!");>開啟</button>
-                                <button id="result1" type="button" class="btn btn-danger"
-                                    onClick=control("27,L!");>關閉</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>風燈</td>
-                            <td>
-
-                                <button id="result2" type="button" class="btn btn-primary"
-                                    onClick=control("4,H!");>開啟</button>
-                                <button id="result3" type="button" class="btn btn-danger"
-                                    onClick=control("4,L!");>關閉</button>
-
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
-        </div>
-    </div><!-- row end-->
-
-    <div class="card" style="margin:10px 10px 15px 10px;">
-        <div class="card-header bg-info text-white">圖表數據</div>
+      </div>
+      <div class="col-sm" style="margin:0px 0px 0px 0px;">
         <!-- <figure class="highcharts-figure"> -->
-        <div id="containerth"></div>
-        <!-- </figure>> -->
+        <div class="card">
+          <div class="card-header bg-info text-white">圖表數據</div>
+          <div id="container1" style="margin-top:30px;"></div>
+          <div id="container2" style="margin-top:30px;"></div>
+          <div id="container3" style="margin-top:30px;"></div>
+        </div>
+        <!-- </figure> -->
+      </div>
+      <div class="col-sm" style="margin:0px 0px 0px 0px; ">
+        <div class="card">
+          <div class="card-header bg-info text-white">感測數據</div>
+          <table class="table table-hover" style="margin-bottom:0;">
+            <thead>
+              <tr>
+                <th>
+                  <h6>感測器</h6>
+                </th>
+                <th>
+                  <h6>數值</h6>
+                </th>
+                <th>
+                  <h6>更新時間</h6>
+                </th>
+                <!-- <th><h6>test</h6></th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <% for ( var i = 0 ; i < creatdata.length ; i++){ %>
+              <tr class="<%= creatdata[i].name  %>">
+                <td>
+                  <%= creatdata[i].name %>
+                </td>
+                <td class="value">
+                  <%= creatdata[i].value %>
+                </td>
+                <td class="time">
+                  <%=moment(creatdata[i].datetime).format('YYYY-MM-DDHH:mm:ss')%>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="margin:15px 0px 10px 0px;">
+          <div class="card-header bg-info text-white">電器控制</div>
+          <table class="table table-hover" style="margin-bottom:0;">
+            <thead>
+              <tr>
+                <th>
+                  <h6>電器名稱</h6>
+                </th>
+                <th>
+                  <h6>操作</h6>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>電扇</td>
+                <td>
+                  <button
+                    id="result"
+                    type="button"
+                    class="btn btn-primary"
+                    onClick="control('27,H!')"
+                  >
+                    開啟
+                  </button>
+                  <button
+                    id="result1"
+                    type="button"
+                    class="btn btn-danger"
+                    onClick="control('27,L!')"
+                  >
+                    關閉
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>風燈</td>
+                <td>
+                  <button
+                    id="result2"
+                    type="button"
+                    class="btn btn-primary"
+                    onClick="control('4,H!')"
+                  >
+                    開啟
+                  </button>
+                  <button
+                    id="result3"
+                    type="button"
+                    class="btn btn-danger"
+                    onClick="control('4,L!')"
+                  >
+                    關閉
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-
-</div> <!-- container end-->
-
+    <!-- row end-->
+    <div class="card" style="margin:20px 10px 15px 10px;">
+      <div class="card-header bg-info text-white">圖表數據</div>
+      <!-- <figure class="highcharts-figure"> -->
+      <div id="containerth"></div>
+      <!-- </figure>> -->
+    </div>
+  </div>
+  <!-- container end-->
+</div>
 <script>
+  $(function() {
+    // temp_chart();
 
-    $(function () {
-
-        // temp_chart();
-
-        setInterval(function () {
-            $.ajax({
-                url: "/sensor"
-            })
-                .done(function (data) {
-                    // $('table:eq(0) tbody').text(data.data[1].value );
-                    for (var i in data.data) {
-                        $('table:eq(0) tbody  tr.' + data.data[i].name + ' td.value').text(data.data[i].value);
-                        $('table:eq(0) tbody  tr.' + data.data[i].name + ' td.time').text(moment.utc(data.data[i].datetime).format('YYYY-MM-DD HH:mm:ss'));
-                    }
-
-                    console.log("setInterval of data");
-                    // console.log(data.data);
-
-                });
-        }, 60000);
-
-
-        temp_chart();
-        hum_chart();
-        Wtemp_chart();
-        th_chart();
-
-        requestTempChart();
-        requestHumchart();
-        requestWtempChart();
-        requestTHchart();
-
-
-        // requestTHchart();
-
-        setInterval(function () {
-            requestTempChart();
-        }, 600000);
-        setInterval(function () {
-            requestHumchart();
-        }, 600000);
-        setInterval(function () {
-            requestWtempChart();
-        }, 600000);
-        setInterval(function () {
-            requestTHchart();
-        }, 600000);
-
-        // console.log("123");
-    });
-
-    function changeDom() {
-        $.ajax({
-            // cache: false,
-            url: "/success"
-        })
-            .done(function (data) {
-
-                alert(data.success);
-
-            });
-    }
-
-
-    //控制繼電器
-    function control(cmd, status) {
-
-        // var socket = io();
-
-        $.get('/control', { cmd: cmd });
-
-
-        //  socket.on('message', function(data){
-        // 	console.log(data.message);
-        // 	// if(data.message){
-        // 		alert(data.message);	
-        // 	// }
-        // });
-
-        $('#result').attr('disabled', true);
-        $('#result1').attr('disabled', true);
-        $('#result2').attr('disabled', true);
-        $('#result3').attr('disabled', true);
-
-
-        setTimeout(function () {
-
-            changeDom();
-
-            $('#result').attr('disabled', false);
-            $('#result1').attr('disabled', false);
-            $('#result2').attr('disabled', false);
-            $('#result3').attr('disabled', false);
-
-            // $("#result").addClass("aria-pressed='true'");
-        }, 1000);
-
-
-        console.log(status);
-        console.log(cmd);
-    }
-
-
-</script>
-
-
-<script>
-    var gaugeOptions = {
-        chart: {
-            type: 'solidgauge',
-            backgroundColor: 'rgba(0,0,0,0)'
-        },
-
-        title: null,
-
-        pane: {
-            center: ['50%', '85%'],
-            size: '140%',
-            startAngle: -90,
-            endAngle: 90,
-            background: {
-                backgroundColor: 'rgba(0,0,0,0)',
-                innerRadius: '60%',
-                outerRadius: '100%',
-                shape: 'arc'
-            }
-        },
-
-        credits: {
-            enabled: false
-        },
-
-        exporting: {
-            enabled: false
-        },
-
-        tooltip: {
-            enabled: false
-        },
-
-        // the value axis
-        yAxis: {
-            stops: [
-                [0.1, '#2894FF'], // blue
-                [0.3, '#55BF3B'], // green
-                [0.6, '#DDDF0D'], // yellow
-                [0.8, '#DF5353'] // red
-            ],
-            lineWidth: 0,
-            tickWidth: 0,
-            minorTickInterval: null,
-            tickAmount: 2,
-            title: {
-                y: -70
-            },
-            labels: {
-                y: 16
-            }
-        },
-
-        plotOptions: {
-            solidgauge: {
-                dataLabels: {
-                    y: 5,
-                    borderWidth: 0,
-                    useHTML: true
-                }
-            }
+    setInterval(function() {
+      $.ajax({
+        url: "/sensor"
+      }).done(function(data) {
+        // $('table:eq(0) tbody').text(data.data[1].value );
+        for (var i in data.data) {
+          $("table:eq(0) tbody  tr." + data.data[i].name + " td.value").text(
+            data.data[i].value
+          );
+          $("table:eq(0) tbody  tr." + data.data[i].name + " td.time").text(
+            moment.utc(data.data[i].datetime).format("YYYY-MM-DD HH:mm:ss")
+          );
         }
-    };
 
-    // The speed gauge
-    var chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 60,
-            title: {
-                text: '溫度'
-            }
-        },
+        console.log("setInterval of data");
+        // console.log(data.data);
+      });
+    }, 60000);
 
-        credits: {
-            enabled: false
-        },
+    temp_chart();
+    hum_chart();
+    Wtemp_chart();
+    th_chart();
 
-        series: [{
-            name: '溫度',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">℃</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' ℃'
-            }
-        }]
+    requestTempChart();
+    requestHumchart();
+    requestWtempChart();
+    requestTHchart();
 
-    }));
+    // requestTHchart();
 
-    // The RPM gauge
-    var chartRpm = Highcharts.chart('container-rpm', Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 100,
-            title: {
-                text: '濕度'
-            }
-        },
+    setInterval(function() {
+      requestTempChart();
+    }, 600000);
+    setInterval(function() {
+      requestHumchart();
+    }, 600000);
+    setInterval(function() {
+      requestWtempChart();
+    }, 600000);
+    setInterval(function() {
+      requestTHchart();
+    }, 600000);
 
-        series: [{
-            name: '濕度',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y:.1f}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">' +
-                    '%RH' +
-                    '</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' %RH'
-            }
-        }]
+    // console.log("123");
+  });
 
-    }));
+  function changeDom() {
+    $.ajax({
+      // cache: false,
+      url: "/success"
+    }).done(function(data) {
+      alert(data.success);
+    });
+  }
 
-    // The speed gauge
-    var chartwater = Highcharts.chart('container-water', Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 60,
-            title: {
-                text: '水溫'
-            }
-        },
+  //控制繼電器
+  function control(cmd, status) {
+    // var socket = io();
 
-        credits: {
-            enabled: false
-        },
+    $.get("/control", { cmd: cmd });
 
-        series: [{
-            name: '水溫',
-            data: [0],
-            dataLabels: {
-                format:
-                    '<div style="text-align:center">' +
-                    '<span style="font-size:25px">{y}</span><br/>' +
-                    '<span style="font-size:12px;opacity:0.4">℃</span>' +
-                    '</div>'
-            },
-            tooltip: {
-                valueSuffix: ' ℃'
-            }
-        }]
+    //  socket.on('message', function(data){
+    // 	console.log(data.message);
+    // 	// if(data.message){
+    // 		alert(data.message);
+    // 	// }
+    // });
 
-    }));
+    $("#result").attr("disabled", true);
+    $("#result1").attr("disabled", true);
+    $("#result2").attr("disabled", true);
+    $("#result3").attr("disabled", true);
 
-    // Bring life to the dials
-    setInterval(function () {
-        // Speed
-        var point,
-            tempVal,
-            humVal,
-            wtempVal;
+    setTimeout(function() {
+      changeDom();
 
-        $.ajax({
-            url: "/sensor"
-        })
-            .done(function (data) {
-                // $('table:eq(0) tbody').text(data.data[1].value );
-                if (chartSpeed) {
-                    point = chartSpeed.series[0].points[0];
-                    tempVal = data.data[0].value;
-                    point.update(tempVal);
-                    // console.log(newVal);
-                }
-                if (chartRpm) {
-                    point = chartRpm.series[0].points[0];
-                    humVal = data.data[1].value;
-                    point.update(humVal);
-                    // console.log(newVal);
-                }
-                if (chartwater) {
-                    point = chartwater.series[0].points[0];
-                    wtempVal = data.data[2].value;
-                    point.update(wtempVal);
-                    // console.log(newVal);
-                }
-            });
+      $("#result").attr("disabled", false);
+      $("#result1").attr("disabled", false);
+      $("#result2").attr("disabled", false);
+      $("#result3").attr("disabled", false);
+
+      // $("#result").addClass("aria-pressed='true'");
     }, 1000);
 
+    console.log(status);
+    console.log(cmd);
+  }
+</script>
 
-    function appendPoint(chart, date, temp, ) {
-        chart.series[0].addPoint([date, temp], true, chart.series[0].points.length > 10, true);
+<script>
+  var gaugeOptions = {
+    chart: {
+      type: "solidgauge",
+      backgroundColor: "rgba(0,0,0,0)"
+    },
+
+    title: null,
+
+    pane: {
+      center: ["50%", "85%"],
+      size: "140%",
+      startAngle: -90,
+      endAngle: 90,
+      background: {
+        backgroundColor: "rgba(0,0,0,0)",
+        innerRadius: "60%",
+        outerRadius: "100%",
+        shape: "arc"
+      }
+    },
+
+    credits: {
+      enabled: false
+    },
+
+    exporting: {
+      enabled: false
+    },
+
+    tooltip: {
+      enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+      stops: [
+        [0.1, "#2894FF"], // blue
+        [0.3, "#55BF3B"], // green
+        [0.6, "#DDDF0D"], // yellow
+        [0.8, "#DF5353"] // red
+      ],
+      lineWidth: 0,
+      tickWidth: 0,
+      minorTickInterval: null,
+      tickAmount: 2,
+      title: {
+        y: -70
+      },
+      labels: {
+        y: 16
+      }
+    },
+
+    plotOptions: {
+      solidgauge: {
+        dataLabels: {
+          y: 5,
+          borderWidth: 0,
+          useHTML: true
+        }
+      }
     }
-
-    function appendPoint2(chart, date, temp, ) {
-        chart.series[1].addPoint([date, temp], true, chart.series[1].points.length > 10, true);
-    }
-
-
-    function temp_chart() {
-        var options = {
-            // Highcharts.chart('container2', {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                renderTo: 'container1', //顯示在哪一區域
-                marginRight: 10,
-                events: {
-                    load: requestTempChart
-                }
-            },
-
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
-
-
-            time: {
-                useUTC: true
-            },
-
-            title: {
-                text: '空 氣 溫 度'
-            },
-
-            // accessibility: {
-            //     announceNewData: {
-            //         enabled: true,
-            //         minAnnounceInterval: 15000,
-            //         announcementFormatter: function (allSeries, newSeries, newPoint) {
-            //             if (newPoint) {
-            //                 return 'New point added. Value: ' + newPoint.y;
-            //             }
-            //             return false;
-            //         }
-            //     }
-            // },
-
-            xAxis: {
-
-                title: {
-                    text: "時間"
-                },
-
-                type: 'datetime',
-                // tickPixelInterval: 150
-
-                labels: {
-                    formatter: function () {
-                        return Highcharts.dateFormat('%H:%M:%S', this.value);
-                    }
-                }
-
-            },
-
-            yAxis: {
-                title: {
-                    text: '溫度(℃)',
-                    align: 'high',
-                    offset: 10,
-                    rotation: 0,
-                    y: -20
-                },
-                // plotLines: [{
-                //     value: 0,
-                //     width: 1,
-                //     color: '#808080'
-                // }]
-            },
-
-            // tooltip: {
-            //     headerFormat: '<b>{series.name}</b><br/>',
-            //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-            // },
-
-            legend: {
-                enabled: false
-            },
-
-            exporting: {
-                enabled: false
-            },
-
-            credits: {
-                enabled: false
-            },
-
-            series: [{
-                name: 'temperature'
-            }]
-        };
-
-        tempchart = new Highcharts.Chart(options);
-        // tempchart.redraw();
-        // });
-    }
-
-
-    function requestTempChart() {
-        $.ajax({
-            url: "/chartdata"
-        })
-            .done(function (data) {
-                for (var i in data.tempdata) {
-
-                    datetime = moment.utc(data.tempdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
-
-                    datetime = datetime.split(' ');
-                    date = datetime[0].split('-');
-                    time = datetime[1].split(':');
-                    date = Date.UTC(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
-
-                    appendPoint(tempchart, date, data.tempdata[i].value);
-                    // console.log(date);
-                }
-                tempchart.redraw();
-
-            });
-
-    }
-
-    function hum_chart() {
-        var options = {
-            // Highcharts.chart('container2', {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                renderTo: 'container2', //顯示在哪一區域
-                marginRight: 10
-                // events: {
-                //     load: requestHumchart
-                // }
-            },
-
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
-
-            time: {
-                useUTC: true
-            },
-
-            title: {
-                text: '空 氣 濕 度'
-
-            },
-
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
-
-
-            // accessibility: {
-            //     announceNewData: {
-            //         enabled: true,
-            //         minAnnounceInterval: 15000,
-            //         announcementFormatter: function (allSeries, newSeries, newPoint) {
-            //             if (newPoint) {
-            //                 return 'New point added. Value: ' + newPoint.y;
-            //             }
-            //             return false;
-            //         }
-            //     }
-            // },
-
-            xAxis: {
-
-                title: {
-                    text: "時間"
-                },
-
-                type: 'datetime',
-                // tickPixelInterval: 150
-
-                labels: {
-                    formatter: function () {
-                        return Highcharts.dateFormat('%H:%M:%S', this.value);
-                    }
-                }
-
-            },
-
-            yAxis: {
-                title: {
-                    text: '濕度(%RH)',
-
-                    align: 'high',
-                    offset: 10,
-                    rotation: 0,
-                    y: -20
-                },
-                // plotLines: [{
-                //     value: 0,
-                //     width: 1,
-                //     color: '#808080'
-                // }]
-            },
-
-            // tooltip: {
-            //     headerFormat: '<b>{series.name}</b><br/>',
-            //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-            // },
-
-            legend: {
-                enabled: false
-            },
-
-            exporting: {
-                enabled: false
-            },
-
-            credits: {
-                enabled: false
-            },
-
-            series: [{
-                name: 'humidity'
-                // data: (function () {
-                //     // generate an array of random data
-                //     var data = [],
-                //         time = (new Date()).getTime(),
-                //         i;
-
-                //     for (i = -19; i <= 0; i += 1) {
-                //         data.push({
-                //             x: time + i * 1000,
-                //             y: Math.random()
-                //         });
-                //     }
-                //     return data;
-                // }())
-            }]
-        };
-
-        humchart = new Highcharts.Chart(options);
-        // });
-    }
-
-
-    function requestHumchart() {
-        $.ajax({
-            url: "/chartdata"
-        })
-            .done(function (data) {
-                for (var i in data.humdata) {
-
-                    datetime = moment.utc(data.humdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
-
-                    datetime = datetime.split(' ');
-                    date = datetime[0].split('-');
-                    time = datetime[1].split(':');
-                    date = Date.UTC(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
-
-                    appendPoint(humchart, date, data.humdata[i].value);
-                    // console.log(date);
-                }
-                humchart.redraw();
-
-            });
-
-    }
-
-
-    function Wtemp_chart() {
-        var options = {
-            // Highcharts.chart('container2', {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                renderTo: 'container3', //顯示在哪一區域
-                marginRight: 10,
-                events: {
-                    load: requestWtempChart
-                }
-            },
-
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
-
-
-            time: {
-                useUTC: true
-            },
-
-            title: {
-                text: '水 溫 溫 度'
-            },
-
-            // accessibility: {
-            //     announceNewData: {
-            //         enabled: true,
-            //         minAnnounceInterval: 15000,
-            //         announcementFormatter: function (allSeries, newSeries, newPoint) {
-            //             if (newPoint) {
-            //                 return 'New point added. Value: ' + newPoint.y;
-            //             }
-            //             return false;
-            //         }
-            //     }
-            // },
-
-            xAxis: {
-
-                title: {
-                    text: "時間"
-                },
-
-                type: 'datetime',
-                // tickPixelInterval: 150
-
-                labels: {
-                    formatter: function () {
-                        return Highcharts.dateFormat('%H:%M:%S', this.value);
-                    }
-                }
-
-            },
-
-            yAxis: {
-                title: {
-                    text: '溫度(℃)',
-                    align: 'high',
-                    offset: 10,
-                    rotation: 0,
-                    y: -20
-                },
-                // plotLines: [{
-                //     value: 0,
-                //     width: 1,
-                //     color: '#808080'
-                // }]
-            },
-
-            // tooltip: {
-            //     headerFormat: '<b>{series.name}</b><br/>',
-            //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-            // },
-
-            legend: {
-                enabled: false
-            },
-
-            exporting: {
-                enabled: false
-            },
-
-            credits: {
-                enabled: false
-            },
-
-            series: [{
-                name: 'Watertemperature'
-            }]
-        };
-
-        wtempchart = new Highcharts.Chart(options);
-        // tempchart.redraw();
-        // });
-    }
-
-
-    function requestWtempChart() {
-        $.ajax({
-            url: "/chartdata"
-        })
-            .done(function (data) {
-                for (var i in data.wtempdata) {
-
-                    datetime = moment.utc(data.wtempdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
-
-                    datetime = datetime.split(' ');
-                    date = datetime[0].split('-');
-                    time = datetime[1].split(':');
-                    date = Date.UTC(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
-
-                    appendPoint(wtempchart, date, data.wtempdata[i].value);
-                    // console.log(date);
-                }
-                wtempchart.redraw();
-
-            });
-
-    }
-
-
-    function th_chart() {
-        var options = {
-            // Highcharts.chart('containerth', {
-            chart: {
-                zoomType: 'xy',
-                renderTo: 'containerth', //顯示在哪一區域
-                events: {
-                    // load: requestTHchart
-                }
-                // type: 'spline',
-                // height: 260
-            },
-            title: {
-                text: '空 氣 溫 溼 度',
-                /* align: 'left' */
-            },
-            /* subtitle: {
+  };
+
+  // The speed gauge
+  var chartSpeed = Highcharts.chart(
+    "container-speed",
+    Highcharts.merge(gaugeOptions, {
+      yAxis: {
+        min: 0,
+        max: 60,
+        title: {
+          text: "溫度"
+        }
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          name: "溫度",
+          data: [0],
+          dataLabels: {
+            format:
+              '<div style="text-align:center">' +
+              '<span style="font-size:25px">{y}</span><br/>' +
+              '<span style="font-size:12px;opacity:0.4">℃</span>' +
+              "</div>"
+          },
+          tooltip: {
+            valueSuffix: " ℃"
+          }
+        }
+      ]
+    })
+  );
+
+  // The RPM gauge
+  var chartRpm = Highcharts.chart(
+    "container-rpm",
+    Highcharts.merge(gaugeOptions, {
+      yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+          text: "濕度"
+        }
+      },
+
+      series: [
+        {
+          name: "濕度",
+          data: [0],
+          dataLabels: {
+            format:
+              '<div style="text-align:center">' +
+              '<span style="font-size:25px">{y:.1f}</span><br/>' +
+              '<span style="font-size:12px;opacity:0.4">' +
+              "%RH" +
+              "</span>" +
+              "</div>"
+          },
+          tooltip: {
+            valueSuffix: " %RH"
+          }
+        }
+      ]
+    })
+  );
+
+  // The speed gauge
+  var chartwater = Highcharts.chart(
+    "container-water",
+    Highcharts.merge(gaugeOptions, {
+      yAxis: {
+        min: 0,
+        max: 60,
+        title: {
+          text: "水溫"
+        }
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          name: "水溫",
+          data: [0],
+          dataLabels: {
+            format:
+              '<div style="text-align:center">' +
+              '<span style="font-size:25px">{y}</span><br/>' +
+              '<span style="font-size:12px;opacity:0.4">℃</span>' +
+              "</div>"
+          },
+          tooltip: {
+            valueSuffix: " ℃"
+          }
+        }
+      ]
+    })
+  );
+
+  // Bring life to the dials
+  setInterval(function() {
+    // Speed
+    var point, tempVal, humVal, wtempVal;
+
+    $.ajax({
+      url: "/sensor"
+    }).done(function(data) {
+      // $('table:eq(0) tbody').text(data.data[1].value );
+      if (chartSpeed) {
+        point = chartSpeed.series[0].points[0];
+        tempVal = data.data[0].value;
+        point.update(tempVal);
+        // console.log(newVal);
+      }
+      if (chartRpm) {
+        point = chartRpm.series[0].points[0];
+        humVal = data.data[1].value;
+        point.update(humVal);
+        // console.log(newVal);
+      }
+      if (chartwater) {
+        point = chartwater.series[0].points[0];
+        wtempVal = data.data[2].value;
+        point.update(wtempVal);
+        // console.log(newVal);
+      }
+    });
+  }, 1000);
+
+  function appendPoint(chart, date, temp) {
+    chart.series[0].addPoint(
+      [date, temp],
+      true,
+      chart.series[0].points.length > 10,
+      true
+    );
+  }
+
+  function appendPoint2(chart, date, temp) {
+    chart.series[1].addPoint(
+      [date, temp],
+      true,
+      chart.series[1].points.length > 10,
+      true
+    );
+  }
+
+  function temp_chart() {
+    var options = {
+      // Highcharts.chart('container2', {
+      chart: {
+        type: "spline",
+        animation: Highcharts.svg, // don't animate in old IE
+        renderTo: "container1", //顯示在哪一區域
+        marginRight: 10,
+        events: {
+          //   load: requestTempChart
+        }
+      },
+
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+
+      time: {
+        useUTC: true
+      },
+
+      title: {
+        text: "空 氣 溫 度"
+      },
+
+      // accessibility: {
+      //     announceNewData: {
+      //         enabled: true,
+      //         minAnnounceInterval: 15000,
+      //         announcementFormatter: function (allSeries, newSeries, newPoint) {
+      //             if (newPoint) {
+      //                 return 'New point added. Value: ' + newPoint.y;
+      //             }
+      //             return false;
+      //         }
+      //     }
+      // },
+
+      xAxis: {
+        title: {
+          text: "時間"
+        },
+
+        type: "datetime",
+        // tickPixelInterval: 150
+
+        labels: {
+          formatter: function() {
+            return Highcharts.dateFormat("%H:%M:%S", this.value);
+          }
+        }
+      },
+
+      yAxis: {
+        title: {
+          text: "溫度(℃)",
+          align: "high",
+          offset: 10,
+          rotation: 0,
+          y: -20
+        }
+        // plotLines: [{
+        //     value: 0,
+        //     width: 1,
+        //     color: '#808080'
+        // }]
+      },
+
+      // tooltip: {
+      //     headerFormat: '<b>{series.name}</b><br/>',
+      //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+      // },
+
+      legend: {
+        enabled: false
+      },
+
+      exporting: {
+        enabled: false
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          name: "temperature"
+        }
+      ]
+    };
+
+    tempchart = new Highcharts.Chart(options);
+    // tempchart.redraw();
+    // });
+  }
+
+  function requestTempChart() {
+    $.ajax({
+      url: "/chartdata"
+    }).done(function(data) {
+      for (var i in data.tempdata) {
+        datetime = moment
+          .utc(data.tempdata[i].datetime)
+          .format("YYYY-MM-DD HH:mm:ss");
+
+        datetime = datetime.split(" ");
+        date = datetime[0].split("-");
+        time = datetime[1].split(":");
+        date = Date.UTC(
+          date[0],
+          date[1] - 1,
+          date[2],
+          time[0],
+          time[1],
+          time[2]
+        );
+
+        appendPoint(tempchart, date, data.tempdata[i].value);
+        // console.log(date);
+      }
+      tempchart.redraw();
+    });
+  }
+
+  function hum_chart() {
+    var options = {
+      // Highcharts.chart('container2', {
+      chart: {
+        type: "spline",
+        animation: Highcharts.svg, // don't animate in old IE
+        renderTo: "container2", //顯示在哪一區域
+        marginRight: 10
+        // events: {
+        //     load: requestHumchart
+        // }
+      },
+
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+
+      time: {
+        useUTC: true
+      },
+
+      title: {
+        text: "空 氣 濕 度"
+      },
+
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+
+      // accessibility: {
+      //     announceNewData: {
+      //         enabled: true,
+      //         minAnnounceInterval: 15000,
+      //         announcementFormatter: function (allSeries, newSeries, newPoint) {
+      //             if (newPoint) {
+      //                 return 'New point added. Value: ' + newPoint.y;
+      //             }
+      //             return false;
+      //         }
+      //     }
+      // },
+
+      xAxis: {
+        title: {
+          text: "時間"
+        },
+
+        type: "datetime",
+        // tickPixelInterval: 150
+
+        labels: {
+          formatter: function() {
+            return Highcharts.dateFormat("%H:%M:%S", this.value);
+          }
+        }
+      },
+
+      yAxis: {
+        title: {
+          text: "濕度(%RH)",
+
+          align: "high",
+          offset: 10,
+          rotation: 0,
+          y: -20
+        }
+        // plotLines: [{
+        //     value: 0,
+        //     width: 1,
+        //     color: '#808080'
+        // }]
+      },
+
+      // tooltip: {
+      //     headerFormat: '<b>{series.name}</b><br/>',
+      //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+      // },
+
+      legend: {
+        enabled: false
+      },
+
+      exporting: {
+        enabled: false
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          name: "humidity"
+          // data: (function () {
+          //     // generate an array of random data
+          //     var data = [],
+          //         time = (new Date()).getTime(),
+          //         i;
+
+          //     for (i = -19; i <= 0; i += 1) {
+          //         data.push({
+          //             x: time + i * 1000,
+          //             y: Math.random()
+          //         });
+          //     }
+          //     return data;
+          // }())
+        }
+      ]
+    };
+
+    humchart = new Highcharts.Chart(options);
+    // });
+  }
+
+  function requestHumchart() {
+    $.ajax({
+      url: "/chartdata"
+    }).done(function(data) {
+      for (var i in data.humdata) {
+        datetime = moment
+          .utc(data.humdata[i].datetime)
+          .format("YYYY-MM-DD HH:mm:ss");
+
+        datetime = datetime.split(" ");
+        date = datetime[0].split("-");
+        time = datetime[1].split(":");
+        date = Date.UTC(
+          date[0],
+          date[1] - 1,
+          date[2],
+          time[0],
+          time[1],
+          time[2]
+        );
+
+        appendPoint(humchart, date, data.humdata[i].value);
+        // console.log(date);
+      }
+      humchart.redraw();
+    });
+  }
+
+  function Wtemp_chart() {
+    var options = {
+      // Highcharts.chart('container2', {
+      chart: {
+        type: "spline",
+        animation: Highcharts.svg, // don't animate in old IE
+        renderTo: "container3", //顯示在哪一區域
+        marginRight: 10,
+        events: {
+          //   load: requestWtempChart
+        }
+      },
+
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+
+      time: {
+        useUTC: true
+      },
+
+      title: {
+        text: "水 溫 溫 度"
+      },
+
+      // accessibility: {
+      //     announceNewData: {
+      //         enabled: true,
+      //         minAnnounceInterval: 15000,
+      //         announcementFormatter: function (allSeries, newSeries, newPoint) {
+      //             if (newPoint) {
+      //                 return 'New point added. Value: ' + newPoint.y;
+      //             }
+      //             return false;
+      //         }
+      //     }
+      // },
+
+      xAxis: {
+        title: {
+          text: "時間"
+        },
+
+        type: "datetime",
+        // tickPixelInterval: 150
+
+        labels: {
+          formatter: function() {
+            return Highcharts.dateFormat("%H:%M:%S", this.value);
+          }
+        }
+      },
+
+      yAxis: {
+        title: {
+          text: "溫度(℃)",
+          align: "high",
+          offset: 10,
+          rotation: 0,
+          y: -20
+        }
+        // plotLines: [{
+        //     value: 0,
+        //     width: 1,
+        //     color: '#808080'
+        // }]
+      },
+
+      // tooltip: {
+      //     headerFormat: '<b>{series.name}</b><br/>',
+      //     pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+      // },
+
+      legend: {
+        enabled: false
+      },
+
+      exporting: {
+        enabled: false
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      series: [
+        {
+          name: "Watertemperature"
+        }
+      ]
+    };
+
+    wtempchart = new Highcharts.Chart(options);
+    // tempchart.redraw();
+    // });
+  }
+
+  function requestWtempChart() {
+    $.ajax({
+      url: "/chartdata"
+    }).done(function(data) {
+      for (var i in data.wtempdata) {
+        datetime = moment
+          .utc(data.wtempdata[i].datetime)
+          .format("YYYY-MM-DD HH:mm:ss");
+
+        datetime = datetime.split(" ");
+        date = datetime[0].split("-");
+        time = datetime[1].split(":");
+        date = Date.UTC(
+          date[0],
+          date[1] - 1,
+          date[2],
+          time[0],
+          time[1],
+          time[2]
+        );
+
+        appendPoint(wtempchart, date, data.wtempdata[i].value);
+        // console.log(date);
+      }
+      wtempchart.redraw();
+    });
+  }
+
+  function th_chart() {
+    var options = {
+      // Highcharts.chart('containerth', {
+      chart: {
+        zoomType: "xy",
+        renderTo: "containerth", //顯示在哪一區域
+        events: {
+          // load: requestTHchart
+        }
+        // type: 'spline',
+        // height: 260
+      },
+      title: {
+        text: "空 氣 溫 溼 度"
+        /* align: 'left' */
+      },
+      /* subtitle: {
                 text: 'Source: WorldClimate.com',
                 align: 'left'
             }, */
-            xAxis: [{
+      xAxis: [
+        {
+          title: {
+            text: "時間"
+          },
 
-                title: {
-                    text: "時間"
-                },
+          type: "datetime",
+          // tickPixelInterval: 150
 
-                type: 'datetime',
-                // tickPixelInterval: 150
-
-                labels: {
-                    formatter: function () {
-                        return Highcharts.dateFormat('%H:%M:%S', this.value);
-                    }
-                },
-
-                crosshair: true
-            }],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    format: '{value}°C',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                },
-                title: {
-                    text: '溫度',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                },
-                /* opposite: true */
-
-            }, { // Tertiary yAxis
-                gridLineWidth: 0,
-                title: {
-                    text: '濕度',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                labels: {
-                    format: '{value} %RH',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                opposite: true
-            }],
-            tooltip: {
-                shared: true
-            },
-
-            credits: {
-                enabled: false
-            },
-
-            exporting: {
-                enabled: false
-            },
-
-            legend: {
-                layout: 'vertical',
-                align: 'left',
-                x: 80,
-                verticalAlign: 'top',
-                y: 55,
-                floating: true,
-                backgroundColor:
-                    Highcharts.defaultOptions.legend.backgroundColor || // theme
-                    'rgba(255,255,255,0.25)'
-            },
-            series: [{
-                name: '濕度',
-                type: 'spline',
-                yAxis: 1,
-                // data: [1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1, 1016.9, 1018.2, 1016.7],
-                marker: {
-                    enabled: false
-                },
-
-                tooltip: {
-                    valueSuffix: ' %RH'
-                }
-
-            }, {
-                name: '溫度',
-                type: 'spline',
-                // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-
-                marker: {
-                    enabled: false
-                },
-
-                tooltip: {
-                    valueSuffix: ' °C'
-                }
-            }],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        legend: {
-                            floating: false,
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom',
-                            x: 0,
-                            y: 0
-                        },
-                        yAxis: [{
-                            labels: {
-                                align: 'right',
-                                x: 0,
-                                y: -6
-                            },
-                            showLastLabel: false
-                        }, {
-                            labels: {
-                                align: 'left',
-                                x: 0,
-                                y: -6
-                            },
-                            showLastLabel: false
-                        }, {
-                            visible: false
-                        }]
-                    }
-                }]
+          labels: {
+            formatter: function() {
+              return Highcharts.dateFormat("%H:%M:%S", this.value);
             }
+          },
+
+          crosshair: true
         }
-        thchart = new Highcharts.Chart(options);
-    }
+      ],
+      yAxis: [
+        {
+          // Primary yAxis
+          labels: {
+            format: "{value}°C",
+            style: {
+              color: Highcharts.getOptions().colors[1]
+            }
+          },
+          title: {
+            text: "溫度",
+            style: {
+              color: Highcharts.getOptions().colors[1]
+            }
+          }
+          /* opposite: true */
+        },
+        {
+          // Tertiary yAxis
+          gridLineWidth: 0,
+          title: {
+            text: "濕度",
+            style: {
+              color: Highcharts.getOptions().colors[0]
+            }
+          },
+          labels: {
+            format: "{value} %RH",
+            style: {
+              color: Highcharts.getOptions().colors[0]
+            }
+          },
+          opposite: true
+        }
+      ],
+      tooltip: {
+        shared: true
+      },
 
-    function requestTHchart() {
-        $.ajax({
-            url: "/chartdata"
-        })
-            .done(function (data) {
+      credits: {
+        enabled: false
+      },
 
-                console.log(new Date() + "1");
+      exporting: {
+        enabled: false
+      },
 
+      legend: {
+        layout: "vertical",
+        align: "left",
+        x: 80,
+        verticalAlign: "top",
+        y: 55,
+        floating: true,
+        backgroundColor:
+          Highcharts.defaultOptions.legend.backgroundColor || // theme
+          "rgba(255,255,255,0.25)"
+      },
+      series: [
+        {
+          name: "濕度",
+          type: "spline",
+          yAxis: 1,
+          // data: [1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1, 1016.9, 1018.2, 1016.7],
+          marker: {
+            enabled: false
+          },
 
-                for (var i in data.humdata) {
+          tooltip: {
+            valueSuffix: " %RH"
+          }
+        },
+        {
+          name: "溫度",
+          type: "spline",
+          // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
 
-                    datetime = moment.utc(data.humdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
+          marker: {
+            enabled: false
+          },
 
-                    datetime = datetime.split(' ');
-                    date = datetime[0].split('-');
-                    time = datetime[1].split(':');
-                    date = Date.UTC(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
-
-                    appendPoint(thchart, date, data.humdata[i].value); //第2個y軸線 匯入資料
-
+          tooltip: {
+            valueSuffix: " °C"
+          }
+        }
+      ],
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500
+            },
+            chartOptions: {
+              legend: {
+                floating: false,
+                layout: "horizontal",
+                align: "center",
+                verticalAlign: "bottom",
+                x: 0,
+                y: 0
+              },
+              yAxis: [
+                {
+                  labels: {
+                    align: "right",
+                    x: 0,
+                    y: -6
+                  },
+                  showLastLabel: false
+                },
+                {
+                  labels: {
+                    align: "left",
+                    x: 0,
+                    y: -6
+                  },
+                  showLastLabel: false
+                },
+                {
+                  visible: false
                 }
+              ]
+            }
+          }
+        ]
+      }
+    };
+    thchart = new Highcharts.Chart(options);
+  }
 
-                for (var i in data.tempdata) {
+  function requestTHchart() {
+    $.ajax({
+      url: "/chartdata"
+    }).done(function(data) {
+      console.log(new Date() + "1");
 
-                    datetime = moment.utc(data.tempdata[i].datetime).format('YYYY-MM-DD HH:mm:ss');
+      for (var i in data.humdata) {
+        datetime = moment
+          .utc(data.humdata[i].datetime)
+          .format("YYYY-MM-DD HH:mm:ss");
 
-                    datetime = datetime.split(' ');
-                    date = datetime[0].split('-');
-                    time = datetime[1].split(':');
-                    date = Date.UTC(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
+        datetime = datetime.split(" ");
+        date = datetime[0].split("-");
+        time = datetime[1].split(":");
+        date = Date.UTC(
+          date[0],
+          date[1] - 1,
+          date[2],
+          time[0],
+          time[1],
+          time[2]
+        );
 
-                    appendPoint2(thchart, date, data.tempdata[i].value); //第1個y軸線 匯入資料
+        appendPoint(thchart, date, data.humdata[i].value); //第2個y軸線 匯入資料
+      }
 
-                }
-                thchart.redraw();
-                console.log(new Date() + "2");
-            });
+      for (var i in data.tempdata) {
+        datetime = moment
+          .utc(data.tempdata[i].datetime)
+          .format("YYYY-MM-DD HH:mm:ss");
 
+        datetime = datetime.split(" ");
+        date = datetime[0].split("-");
+        time = datetime[1].split(":");
+        date = Date.UTC(
+          date[0],
+          date[1] - 1,
+          date[2],
+          time[0],
+          time[1],
+          time[2]
+        );
 
-
-    }
-
+        appendPoint2(thchart, date, data.tempdata[i].value); //第1個y軸線 匯入資料
+      }
+      thchart.redraw();
+      console.log(new Date() + "2");
+    });
+  }
 </script>
