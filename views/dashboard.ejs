@@ -484,7 +484,7 @@
         renderTo: "container1", //顯示在哪一區域
         marginRight: 10,
         events: {
-          //   load: requestTempChart
+            load: requestTempChart
         }
       },
 
@@ -611,10 +611,10 @@
         type: "spline",
         animation: Highcharts.svg, // don't animate in old IE
         renderTo: "container2", //顯示在哪一區域
-        marginRight: 10
-        // events: {
-        //     load: requestHumchart
-        // }
+        marginRight: 10,
+        events: {
+            load: requestHumchart
+        }
       },
 
       plotOptions: {
@@ -764,7 +764,7 @@
         renderTo: "container3", //顯示在哪一區域
         marginRight: 10,
         events: {
-          //   load: requestWtempChart
+            load: requestWtempChart
         }
       },
 
@@ -891,7 +891,7 @@
         zoomType: "xy",
         renderTo: "containerth", //顯示在哪一區域
         events: {
-          // load: requestTHchart
+          load: requestTHchart
         }
         // type: 'spline',
         // height: 260
