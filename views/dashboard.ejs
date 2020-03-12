@@ -296,8 +296,8 @@
     // the value axis
     yAxis: {
       stops: [
-        [0.1, "#2894FF"], // blue
-        [0.3, "#55BF3B"], // green
+        [0.2, "#2894FF"], // blue
+        [0.4, "#55BF3B"], // green
         [0.6, "#DDDF0D"], // yellow
         [0.8, "#DF5353"] // red
       ],
@@ -328,12 +328,14 @@
   var chartSpeed = Highcharts.chart(
     "container-speed",
     Highcharts.merge(gaugeOptions, {
+      title: {
+        text: "水質硬度",
+        useHTML: true,
+        margin: 0
+      },
       yAxis: {
         min: 0,
-        max: 60,
-        title: {
-          text: "溫度"
-        }
+        max: 1000
       },
 
       credits: {
@@ -342,17 +344,17 @@
 
       series: [
         {
-          name: "溫度",
+          name: "水質硬度",
           data: [0],
           dataLabels: {
             format:
               '<div style="text-align:center">' +
-              '<span style="font-size:25px">{y}</span><br/>' +
-              '<span style="font-size:12px;opacity:0.4">℃</span>' +
+              '<span style="font-size:20px">{y}</span><br/>' +
+              '<span style="font-size:15px;opacity:0.4">ppm</span>' +
               "</div>"
           },
           tooltip: {
-            valueSuffix: " ℃"
+            valueSuffix: " ppm"
           }
         }
       ]
@@ -363,29 +365,31 @@
   var chartRpm = Highcharts.chart(
     "container-rpm",
     Highcharts.merge(gaugeOptions, {
+      title: {
+        text: "水質酸鹼",
+        useHTML: true,
+        margin: 0
+      },
       yAxis: {
         min: 0,
-        max: 100,
-        title: {
-          text: "濕度"
-        }
+        max: 15
       },
 
       series: [
         {
-          name: "濕度",
+          name: "水質酸鹼",
           data: [0],
           dataLabels: {
             format:
               '<div style="text-align:center">' +
-              '<span style="font-size:25px">{y:.1f}</span><br/>' +
-              '<span style="font-size:12px;opacity:0.4">' +
-              "%RH" +
+              '<span style="font-size:20px">{y:.1f}</span><br/>' +
+              '<span style="font-size:15px;opacity:0.4">' +
+              "pH" +
               "</span>" +
               "</div>"
           },
           tooltip: {
-            valueSuffix: " %RH"
+            valueSuffix: " pH"
           }
         }
       ]
@@ -396,12 +400,14 @@
   var chartwater = Highcharts.chart(
     "container-water",
     Highcharts.merge(gaugeOptions, {
+      title: {
+        text: "水溫",
+        useHTML: true,
+        margin: 0
+      },
       yAxis: {
         min: 0,
-        max: 60,
-        title: {
-          text: "水溫"
-        }
+        max: 40
       },
 
       credits: {
@@ -415,8 +421,8 @@
           dataLabels: {
             format:
               '<div style="text-align:center">' +
-              '<span style="font-size:25px">{y}</span><br/>' +
-              '<span style="font-size:12px;opacity:0.4">℃</span>' +
+              '<span style="font-size:20px">{y}</span><br/>' +
+              '<span style="font-size:15px;opacity:0.4">℃</span>' +
               "</div>"
           },
           tooltip: {
@@ -484,7 +490,7 @@
         renderTo: "container1", //顯示在哪一區域
         marginRight: 10,
         events: {
-            load: requestTempChart
+          load: requestTempChart
         }
       },
 
@@ -501,7 +507,7 @@
       },
 
       title: {
-        text: "空 氣 溫 度"
+        text: "水 質 硬 度"
       },
 
       // accessibility: {
@@ -534,7 +540,7 @@
 
       yAxis: {
         title: {
-          text: "溫度(℃)",
+          text: "濃度(ppm)",
           align: "high",
           offset: 10,
           rotation: 0,
@@ -566,7 +572,7 @@
 
       series: [
         {
-          name: "temperature"
+          name: "TDS"
         }
       ]
     };
@@ -613,7 +619,7 @@
         renderTo: "container2", //顯示在哪一區域
         marginRight: 10,
         events: {
-            load: requestHumchart
+          load: requestHumchart
         }
       },
 
@@ -630,7 +636,7 @@
       },
 
       title: {
-        text: "空 氣 濕 度"
+        text: "水 質 酸 鹼"
       },
 
       plotOptions: {
@@ -671,7 +677,7 @@
 
       yAxis: {
         title: {
-          text: "濕度(%RH)",
+          text: "酸鹼值(pH)",
 
           align: "high",
           offset: 10,
@@ -704,7 +710,7 @@
 
       series: [
         {
-          name: "humidity"
+          name: "pH"
           // data: (function () {
           //     // generate an array of random data
           //     var data = [],
@@ -764,7 +770,7 @@
         renderTo: "container3", //顯示在哪一區域
         marginRight: 10,
         events: {
-            load: requestWtempChart
+          load: requestWtempChart
         }
       },
 
@@ -897,7 +903,7 @@
         // height: 260
       },
       title: {
-        text: "空 氣 溫 溼 度"
+        text: "水 質 趨 勢"
         /* align: 'left' */
       },
       /* subtitle: {
@@ -926,13 +932,13 @@
         {
           // Primary yAxis
           labels: {
-            format: "{value}°C",
+            format: "{value} ppm",
             style: {
               color: Highcharts.getOptions().colors[1]
             }
           },
           title: {
-            text: "溫度",
+            text: "水質硬度",
             style: {
               color: Highcharts.getOptions().colors[1]
             }
@@ -943,13 +949,13 @@
           // Tertiary yAxis
           gridLineWidth: 0,
           title: {
-            text: "濕度",
+            text: "水質酸鹼",
             style: {
               color: Highcharts.getOptions().colors[0]
             }
           },
           labels: {
-            format: "{value} %RH",
+            format: "{value} pH",
             style: {
               color: Highcharts.getOptions().colors[0]
             }
@@ -982,7 +988,7 @@
       },
       series: [
         {
-          name: "濕度",
+          name: "酸鹼值",
           type: "spline",
           yAxis: 1,
           // data: [1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1, 1016.9, 1018.2, 1016.7],
@@ -991,11 +997,11 @@
           },
 
           tooltip: {
-            valueSuffix: " %RH"
+            valueSuffix: " pH"
           }
         },
         {
-          name: "溫度",
+          name: "硬度",
           type: "spline",
           // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
 
@@ -1004,7 +1010,7 @@
           },
 
           tooltip: {
-            valueSuffix: " °C"
+            valueSuffix: " ppm"
           }
         }
       ],
