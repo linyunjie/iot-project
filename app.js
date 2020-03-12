@@ -337,7 +337,7 @@ app.get("/chartdata", function(req, res) {
     //     // console.log("set chartdata");
     // });
     client.query(
-      "SELECT value,datetime FROM history WHERE name = 'humidity'  and datetime between  now() - interval '2 hour' and now()  ORDER BY datetime    ",
+      "SELECT value,datetime FROM history WHERE name = 'humidity'  and datetime between  now() - interval '12 hour' and now()  ORDER BY datetime    ",
       function(err, res) {
         //call `done()` to release the client back to the pool
         done();

@@ -86,7 +86,7 @@
                   <%= creatdata[i].value %>
                 </td>
                 <td class="time">
-                  <%=moment(creatdata[i].datetime).format('YYYY-MM-DDHH:mm:ss')%>
+                  <%=moment(creatdata[i].datetime).format('YYYY-MM-DD HH:mm:ss')%>
                 </td>
               </tr>
               <% } %>
@@ -195,8 +195,8 @@
 
     requestTempChart();
     requestHumchart();
-    requestWtempChart();
-    requestTHchart();
+    // requestWtempChart();
+    // requestTHchart();
 
     // requestTHchart();
 
